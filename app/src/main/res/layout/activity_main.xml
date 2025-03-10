@@ -38,8 +38,8 @@
         android:id="@+id/text_input1"
         android:layout_width="394dp"
         android:layout_height="38dp"
-        android:layout_marginTop="40dp"
-        android:hint="Логин"
+        android:layout_marginTop="32dp"
+        android:hint="ФИО"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
@@ -50,11 +50,35 @@
         android:id="@+id/text_input2"
         android:layout_width="394dp"
         android:layout_height="38dp"
-        android:layout_marginTop="12dp"
-        android:hint="Пароль"
+        android:layout_marginTop="8dp"
+        android:hint="Номер группы"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintHorizontal_bias="0.941"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_input1" />
+
+    <EditText
+        android:id="@+id/text_input3"
+        android:layout_width="394dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="44dp"
+        android:hint="Возраст"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.941"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_input1" />
+
+    <EditText
+        android:id="@+id/text_input4"
+        android:layout_width="394dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="80dp"
+        android:hint="Оценка"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_input1" />
 
@@ -62,13 +86,15 @@
         android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="176dp"
+        android:backgroundTint="@color/material_dynamic_primary30"
+        android:onClick="onNextActivity"
         android:text="Начать"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_input2"
-        android:backgroundTint="@color/material_dynamic_primary30"/>
+        app:layout_constraintTop_toBottomOf="@id/text_input2" />
 
     <ImageView
         android:id="@+id/welcome_image"

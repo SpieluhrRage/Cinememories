@@ -1,7 +1,10 @@
 package com.example.platonov;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,5 +60,24 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.i("in method onDestroy", "method start");
         Log.i("in method onDestroy", "method end");
+    }
+
+    public void onNextActivity(View view){
+        EditText fiotxt = findViewById(R.id.text_input1);
+        EditText grouptxt = findViewById(R.id.text_input2);
+        EditText agetxt = findViewById(R.id.text_input3);
+        EditText marktxt = findViewById(R.id.text_input4);
+
+        String fio = fiotxt.getText().toString();
+        String group = grouptxt.getText().toString();
+        int age = Integer.parseInt(agetxt.getText().toString());
+        int mark = Integer.parseInt(marktxt.getText().toString());
+
+        Intent reg = new Intent(this, MainActivity2.class);
+        reg.putExtra("fio", fio);
+        reg.putExtra("group", group);
+        reg.putExtra("age", age);
+        reg.putExtra("mark", mark);
+        startActivity(reg);
     }
 }
