@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
@@ -27,11 +28,39 @@ public class MainActivity extends AppCompatActivity {
         });
         Log.i("in method onCreate", "method start");
         Log.i("in method onCreate", "method end");
+
+
     }
     @Override
     protected void onStart(){
         super.onStart();
         Log.i("in method onStart", "method start");
+
+        Button btn = findViewById(R.id.btn_start);
+        btn.setOnClickListener(new View.OnClickListener (){
+            @Override
+            public void onClick(View view){
+                EditText fiotxt = findViewById(R.id.text_input1);
+                EditText grouptxt = findViewById(R.id.text_input2);
+                EditText agetxt = findViewById(R.id.text_input3);
+                EditText marktxt = findViewById(R.id.text_input4);
+
+                String fio = fiotxt.getText().toString();
+                String group = grouptxt.getText().toString();
+                int age = Integer.parseInt(agetxt.getText().toString());
+                int mark = Integer.parseInt(marktxt.getText().toString());
+
+                Intent reg = new Intent(MainActivity.this, MainActivity2.class);
+                reg.putExtra("fio", fio);
+                reg.putExtra("group", group);
+                reg.putExtra("age", age);
+                reg.putExtra("mark", mark);
+                startActivity(reg);
+            }
+        });
+
+
+
         Log.i("in method onStart", "method end");
     }
 
@@ -80,4 +109,6 @@ public class MainActivity extends AppCompatActivity {
         reg.putExtra("mark", mark);
         startActivity(reg);
     }
+
+
 }
