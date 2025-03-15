@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Cinémathèque</string>
+    <string name="app_name" translatable="false">Cinémathèque</string>
+    <string name="welcometext">Создайте свою домашнюю фильмотеку!</string>
+    <string name="beginButton">Начать</string>
+    <string name="textfieldhint1">ФИО</string>
+    <string name="groupHint">Номер группы</string>
+    <string name="ageHint">Возраст</string>
 </resources>
