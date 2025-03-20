@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Cinémathèque</string>
+    <string name="welcometext">Создайте свою домашнюю фильмотеку!</string>
+    <string name="beginButton">Далее</string>
+    <string name="textfieldhint1">Имя</string>
+    <string name="groupHint">Номер группы</string>
+    <string name="ageHint">Возраст</string>
+    <string name="closebtn">Закрыть</string>
+    <string name="myLibrary">Моя фильмотека</string>
+    <string name="searchFilm">Поиск фильма…</string>
+    <string name="addFilm">Добавить фильм</string>
+    <string name="saveFilm">Сохранить фильм</string>
+    <string name="genre">Жанр</string>
+    <string name="back">Назад</string>
+    <string name="movieName">Название фильма</string>
+    <string name="year">Год</string>
+    <string name="movieDescription">Описание фильма</string>
+</resources>

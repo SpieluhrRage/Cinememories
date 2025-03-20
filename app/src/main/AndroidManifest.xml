@@ -13,6 +13,18 @@
         android:theme="@style/Theme.Platonov"
         tools:targetApi="31">
         <activity
+            android:name=".FilmDetails"
+            android:exported="false" />
+        <activity
+            android:name=".AddFilm"
+            android:exported="false" />
+        <activity
+            android:name=".MainScreen"
+            android:exported="false" />
+        <activity
+            android:name=".FrameLayout"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity2"
             android:exported="false" />
         <activity

@@ -99,8 +99,7 @@
     <androidx.constraintlayout.helper.widget.Layer
         android:id="@+id/layer"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="welcome_image, welcome_image2, welcome_text, text_input1, text_input3, btn_start"/>
+        android:layout_height="wrap_content" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

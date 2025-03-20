@@ -34,33 +34,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        Log.i("in method onStart", "method start");
-
-        Button btn = findViewById(R.id.btn_start);
-        btn.setOnClickListener(new View.OnClickListener (){
-            @Override
-            public void onClick(View view){
-                EditText fiotxt = findViewById(R.id.text_input1);
-                EditText grouptxt = findViewById(R.id.text_input2);
-                EditText agetxt = findViewById(R.id.text_input3);
-                EditText marktxt = findViewById(R.id.text_input4);
-
-                String fio = fiotxt.getText().toString();
-                String group = grouptxt.getText().toString();
-                int age = Integer.parseInt(agetxt.getText().toString());
-                int mark = Integer.parseInt(marktxt.getText().toString());
-
-                Intent reg = new Intent(MainActivity.this, MainActivity2.class);
-                reg.putExtra("fio", fio);
-                reg.putExtra("group", group);
-                reg.putExtra("age", age);
-                reg.putExtra("mark", mark);
-                startActivity(reg);
-            }
-        });
-
-
-
         Log.i("in method onStart", "method end");
     }
 
@@ -92,21 +65,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onNextActivity(View view){
-        EditText fiotxt = findViewById(R.id.text_input1);
-        EditText grouptxt = findViewById(R.id.text_input2);
-        EditText agetxt = findViewById(R.id.text_input3);
-        EditText marktxt = findViewById(R.id.text_input4);
+        //EditText fiotxt = findViewById(R.id.text_input1);
+        //EditText agetxt = findViewById(R.id.text_input3);
 
-        String fio = fiotxt.getText().toString();
-        String group = grouptxt.getText().toString();
-        int age = Integer.parseInt(agetxt.getText().toString());
-        int mark = Integer.parseInt(marktxt.getText().toString());
+        //String fio = fiotxt.getText().toString();
+        //int age = Integer.parseInt(agetxt.getText().toString());
 
-        Intent reg = new Intent(this, MainActivity2.class);
-        reg.putExtra("fio", fio);
-        reg.putExtra("group", group);
-        reg.putExtra("age", age);
-        reg.putExtra("mark", mark);
+
+        Intent reg = new Intent(this, MainScreen.class);
+        //reg.putExtra("fio", fio);
+        //reg.putExtra("age", age);
         startActivity(reg);
     }
 

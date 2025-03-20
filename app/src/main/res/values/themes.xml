@@ -2,7 +2,16 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Platonov" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/addFilmButton</item>
+        <item name="android:textColorHint">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20dp</item>
+        <item name="colorOnPrimary">@color/nightBackground</item>
+        <item name="colorSecondary">@color/addFilmButton</item>
+        <item name="colorOnSecondary">@color/addFilmButton</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
     </style>
 
     <style name="Theme.Platonov" parent="Base.Theme.Platonov" />
