@@ -31,19 +31,15 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
-
     public String getTitle() {
         return title;
     }
-
     public String getYear() {
         return year;
     }
-
     public String getGenre() {
         return genre;
     }
-
     @Override
     public int describeContents() {
         return 0;

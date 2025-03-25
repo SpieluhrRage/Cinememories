@@ -7,7 +7,6 @@
         <item name="android:textColorHint">@color/white</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20dp</item>
-        <item name="colorOnPrimary">@color/nightBackground</item>
         <item name="colorSecondary">@color/addFilmButton</item>
         <item name="colorOnSecondary">@color/addFilmButton</item>
         <item name="colorOnBackground">@color/white</item>

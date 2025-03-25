@@ -3,7 +3,6 @@
     <string name="welcometext">Create your own home film library!</string>
     <string name="beginButton">Start</string>
     <string name="textfieldhint1">Name</string>
-    <string name="groupHint">Номер группы</string>
     <string name="ageHint">Age</string>
     <string name="closebtn">Close</string>
     <string name="myLibrary">My Library</string>
@@ -12,7 +11,7 @@
     <string name="saveFilm">Save movie</string>
     <string name="genre">Genre</string>
     <string name="back">Back</string>
-    <string name="movieName">movieName</string>
+    <string name="movieName">Movie name</string>
     <string name="year">Year</string>
     <string name="movieDescription">Movie description</string>
 </resources>

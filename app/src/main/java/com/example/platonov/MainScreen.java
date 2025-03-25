@@ -41,7 +41,6 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainScreen.this, AddFilm.class);
-                startActivityForResult(intent, 1); // Запуск активности с ожиданием результата
             }
 
         });
@@ -52,12 +51,11 @@ public class MainScreen extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            // Получаем объект Movie из Intent
             Movie newMovie = data.getParcelableExtra("movie");
 
             if (newMovie != null) {
-                movieList.add(newMovie); // Добавляем фильм в список
-                adapter.notifyDataSetChanged(); // Обновляем ListView
+                movieList.add(newMovie);
+                adapter.notifyDataSetChanged();
             }
         }
     }

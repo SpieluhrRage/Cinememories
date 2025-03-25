@@ -34,14 +34,12 @@ public class AddFilm extends AppCompatActivity {
                 String year = yearEditText.getText().toString();
                 String genre = genreEditText.getText().toString();
 
-                // Создаем объект Movie
                 Movie newMovie = new Movie(title, year, genre);
 
-                // Передаем объект через Intent
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("movie", newMovie); // Ключ "movie" и объект Movie
+                resultIntent.putExtra("movie", newMovie);
                 setResult(RESULT_OK, resultIntent);
-                finish(); // Закрываем активность
+                finish();
             }
         });
 
