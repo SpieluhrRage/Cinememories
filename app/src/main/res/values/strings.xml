@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Cinémathèque</string>
+    <string name="hintName">Имя</string>
+    <string name="hintSurname">Фамилия</string>
+    <string name="nextButton">Далее</string>
+    <string name="subject">Предмет</string>
+    <string name="enterInfoButton">Ввести информацию</string>
+    <string name="nameTextview">Имя:</string>
+    <string name="surnameTextView">Фамилия:</string>
+    <string name="hintDay">День</string>
+    <string name="hintTime">Время</string>
+    <string name="hintComment">Комментарии</string>
+    <string name="buttonOK">OK</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
