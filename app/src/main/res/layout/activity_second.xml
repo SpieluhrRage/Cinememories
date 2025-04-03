@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -39,28 +40,48 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Статический" />
+            android:text="Static" />
 
         <Button
             android:id="@+id/buttonDynamic"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Динамический" />
+            android:text="Dynamic" />
 
         <Button
             android:id="@+id/buttonContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Контейнер" />
+            android:layout_gravity="center"
+            android:text="Container" />
 
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/fragmentContainer"
+        android:id="@+id/mainFragmentArea"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginTop="8dp">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/static_fragment_container"
+            android:name="com.example.platonov.StaticFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_static" />
+
+
+
+        <!-- 2. Контейнер для ДИНАМИЧЕСКИ загружаемых фрагментов -->
+        <FrameLayout
+            android:id="@+id/dynamicFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" /> <!-- Изначально скрыт -->
+
+    </FrameLayout>
 
 </LinearLayout>
