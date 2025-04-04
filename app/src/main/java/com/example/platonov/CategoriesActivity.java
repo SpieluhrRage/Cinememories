@@ -40,7 +40,7 @@ public class CategoriesActivity extends AppCompatActivity {
                 String selectedCategory = categories[position];
 
                 // Если выбрано "Все фильмы", идем на главный экран
-                if (selectedCategory.equals("Все фильмы")) {
+                if (selectedCategory.equals("All movies")) {
                     Intent intent = new Intent(CategoriesActivity.this, MainScreen.class);
                     startActivity(intent);
                 } else {

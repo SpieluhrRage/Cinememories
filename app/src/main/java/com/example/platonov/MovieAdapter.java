@@ -116,6 +116,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     intent.putExtra("movie", clickedMovie);
                     context.startActivity(intent);
                 }
+                else {
+                    Log.e("MovieAdapter", "Clicked movie is null at position: " + currentPosition);
+                    Toast.makeText(context, "Ошибка: Фильм не найден", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

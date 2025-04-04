@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Версия приложения: 1.0.0\n\nРазработчик: [Твое имя или ник]\n\nОписание:\nЭто приложение 'Домашняя Фильмотека' позволяет вам..."
+            android:text="Версия приложения: 1.0.0\n\nРазработчик: Timur Platonov\n\nОписание:\nЭто приложение позволяет вам сохранять просмотренные фильмы, сортировать их по жанрам и добавлять собественные комментарии"
             android:layout_marginBottom="8dp"/>
 
         <TextView
@@ -59,7 +59,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="[Добавь еще текста, чтобы прокрутка точно работала]" />
+            android:text="В сон мне - желтые огни\nИ хриплю во сне я\nПо времени, по времени\nУтро мудренее" />
 
     </LinearLayout>
 </ScrollView>

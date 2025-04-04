@@ -56,7 +56,7 @@ public class CategoryItemsActivity extends AppCompatActivity {
         categoryTitleTextView.setText(categoryName);
 
         // --- Определяем, какая категория и заполняем список ---
-        if (categoryName.equals("Посмотреть позже")) {
+        if (categoryName.equals("Watch later")) {
             isWatchlist = true;
             addRemoveLayout.setVisibility(View.VISIBLE); // Показываем блок добавления/удаления
             // TODO: Загрузить сохраненный список "Посмотреть позже" (например, из SharedPreferences или БД)
