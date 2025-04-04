@@ -15,5 +15,28 @@
     <string name="movieName">Название фильма</string>
     <string name="year">Год</string>
     <string name="movieDescription">Описание фильма</string>
+    <string name="select_poster">Выбрать постер</string>
+    <string name="description">Описание</string>
+
+    <string-array name="movie_categories">
+        <item>Все фильмы</item>
+        <item>Посмотреть позже</item> <!-- Наша категория для добавления/удаления -->
+        <item>Комедии</item>
+        <item>Боевики</item>
+        <item>Фантастика</item>
+        <!-- Добавь другие жанры по желанию -->
+    </string-array>
+        <string-array name="movie_genres">
+            <item>Выберите жанр...</item> <!-- Подсказка -->
+            <item>Боевик</item>
+            <item>Комедия</item>
+            <item>Драма</item>
+            <item>Фантастика</item>
+            <item>Триллер</item>
+            <item>Ужасы</item>
+            <item>Мелодрама</item>
+            <item>Приключения</item>
+            <item>Другое</item>
+        </string-array>
 </resources>
 

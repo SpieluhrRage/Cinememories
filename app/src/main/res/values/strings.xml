@@ -14,4 +14,25 @@
     <string name="movieName">Movie name</string>
     <string name="year">Year</string>
     <string name="movieDescription">Movie description</string>
+    <string name="select_poster">Select poster</string>
+    <string name="description">Description</string>
+    <string-array name="movie_categories">
+        <item>All movies</item>
+        <item>Watch later</item>
+        <item>Comedies</item>
+        <item>Action movies</item>
+        <item>Science fiction</item>
+    </string-array>
+        <string-array name="movie_genres">
+            <item>Choose genre...</item> <!-- Подсказка -->
+            <item>Action</item>
+            <item>Comedy</item>
+            <item>Drama</item>
+            <item>Science fiction</item>
+            <item>Thriller</item>
+            <item>Horror</item>
+            <item>Melodrama</item>
+            <item>Adventure</item>
+            <item>Other</item>
+        </string-array>
 </resources>

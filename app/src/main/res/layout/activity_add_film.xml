@@ -1,52 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_add_movie.xml -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:orientation="vertical"
+    tools:context=".AddFilm"> <!-- Укажи свою Activity -->
 
-
-    <EditText
-        android:id="@+id/movieTitle"
+    <!-- Добавляем ScrollView, чтобы элементы можно было прокручивать, если их много -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="40dp"
-        android:hint="@string/movieName" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"> <!-- Важно, чтобы LinearLayout внутри мог растянуться -->
 
-    <EditText
-        android:id="@+id/movieYear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/movieTitle"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="16dp"
-        android:hint="@string/year" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"> <!-- Отступы для содержимого ScrollView -->
 
-    <EditText
-        android:id="@+id/movieGenre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/movieYear"
-        android:layout_marginTop="26dp"
-        android:layout_marginBottom="16dp"
-        android:hint="@string/genre" />
+            <!-- Название фильма -->
+            <EditText
+                android:id="@+id/titleEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:hint="@string/movieName"
+                android:inputType="textCapSentences"
+                android:maxLines="1"/>
 
+            <!-- Описание фильма -->
+            <EditText
+                android:id="@+id/descriptionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:hint="@string/description"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="3"
+                android:gravity="top"/> <!-- Выравнивание текста сверху для multiline -->
+
+            <!-- Год выпуска (если нужен, можно оставить или убрать) -->
+            <EditText
+                android:id="@+id/yearEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/year"
+                android:inputType="number"
+                android:maxLength="4"/>
+
+            <!-- Выбор жанра -->
+            <Spinner
+                android:id="@+id/genreSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:minHeight="48dp"/> <!-- Минимальная высота для удобства нажатия -->
+
+            <!-- Превью постера -->
+            <ImageView
+                android:id="@+id/posterPreviewImageView"
+                android:layout_width="120dp"
+                android:layout_height="180dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:src="@drawable/poster"  /> <!-- Заглушка по умолчанию -->
+
+            <!-- Кнопка выбора постера -->
+            <Button
+                android:id="@+id/selectPosterButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:text="@string/select_poster" /> <!-- Добавь эту строку в strings.xml -->
+
+        </LinearLayout> <!-- Конец LinearLayout внутри ScrollView -->
+
+    </ScrollView> <!-- Конец ScrollView -->
+
+    <!-- Кнопка сохранения (вне ScrollView, всегда внизу) -->
     <Button
-        android:id="@+id/saveMovieButton"
+        android:id="@+id/saveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/movieGenre"
-        android:layout_marginTop="52dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/saveFilm"
         android:textColor="@android:color/white" />
+    <!-- Стиль можно добавить через style="@style/..." -->
 
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/saveMovieButton"
-        android:layout_marginTop="14dp"
-        android:text="@string/back" />
-</RelativeLayout>
+</LinearLayout>

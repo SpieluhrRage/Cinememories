@@ -13,6 +13,15 @@
         android:theme="@style/Theme.Platonov"
         tools:targetApi="31">
         <activity
+            android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CategoryItemsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CategoriesActivity"
+            android:exported="false" />
+        <activity
             android:name=".FilmDetails"
             android:exported="false" />
         <activity

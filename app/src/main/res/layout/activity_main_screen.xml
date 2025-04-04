@@ -8,6 +8,14 @@
     tools:context=".MainScreen"
     android:orientation="vertical"
     android:background="@color/white">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,8 +34,8 @@
         android:hint="@string/searchFilm"
         android:layout_marginBottom="16dp"/>
 
-    <ListView
-        android:id="@+id/movieList"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/movieRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

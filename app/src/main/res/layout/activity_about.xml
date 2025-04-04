@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:id="@+id/main">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="О приложении"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Добавь сюда МНОГО TextView с текстом -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Версия приложения: 1.0.0\n\nРазработчик: [Твое имя или ник]\n\nОписание:\nЭто приложение 'Домашняя Фильмотека' позволяет вам..."
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ScrollView в Android — это контейнер, который позволяет прокручивать его содержимое по вертикали, что особенно полезно, когда содержимое занимает больше места, чем доступно на экране устройства..."
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ListView в Android — это компонент пользовательского интерфейса, который используется для отображения элементов в виде вертикального списка..."
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="RecyclerView — это более продвинутый и гибкий компонент для отображения списков данных в Android, представленный в Android Support Library..."
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Spinner представляет собой выпадающий список. В файле разметки объявляется как элемент Spinner..."
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[Добавь еще текста, чтобы прокрутка точно работала]" />
+
+    </LinearLayout>
+</ScrollView>
+
+    <!-- EditText внизу -->
+<EditText
+android:id="@+id/feedbackEditText"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:hint="Ваш отзыв или предложение..."
+android:inputType="textMultiLine"
+android:minLines="2"
+android:gravity="top"/>
+
+    <!-- Опционально: Кнопка отправки -->
+    <!-- <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Отправить отзыв" /> -->
+
+    </LinearLayout>
