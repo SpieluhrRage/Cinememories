@@ -29,12 +29,16 @@
             android:exported="false" />
         <activity
             android:name=".MainScreen"
-            android:exported="false" />
+            android:exported="false"
+            />
         <activity
             android:name=".FrameLayout"
             android:exported="false" />
         <activity
             android:name=".MainActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".ExploreActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

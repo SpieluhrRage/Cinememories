@@ -17,13 +17,19 @@
     <string name="movieDescription">Описание фильма</string>
     <string name="select_poster">Выбрать постер</string>
     <string name="description">Описание</string>
-
+    <string name="drawer_open">Открыть панель навигации</string>
+    <string name="drawer_close">Закрыть панель навигации</string>
+    <string name="nav_all_movies">Все фильмы</string>
+    <string name="nav_explore">Обзор</string> <!-- Элемент для перехода на Activity 2 -->
+    <string name="nav_wishlist">Посмотреть позже</string>
+    <string name="nav_about">О приложении</string>
     <string-array name="movie_categories">
         <item>Все фильмы</item>
         <item>Посмотреть позже</item> <!-- Наша категория для добавления/удаления -->
         <item>Комедии</item>
         <item>Боевики</item>
         <item>Фантастика</item>
+
         <!-- Добавь другие жанры по желанию -->
     </string-array>
         <string-array name="movie_genres">

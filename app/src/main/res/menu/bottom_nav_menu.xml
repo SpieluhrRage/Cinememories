@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_nav_genres"
+        android:icon="@drawable/list_24dp_b46643_fill0_wght400_grad0_opsz24"
+        android:title="Жанры" />
+
+    <item
+        android:id="@+id/bottom_nav_trending"
+        android:icon="@drawable/trending_up_24dp_b46643_fill0_wght400_grad0_opsz24"
+        android:title="Популярное" />
+
+    <item
+        android:id="@+id/bottom_nav_search"
+        android:icon="@drawable/search_24dp_b46643_fill0_wght400_grad0_opsz24"
+        android:title="Поиск" />
+
+</menu>

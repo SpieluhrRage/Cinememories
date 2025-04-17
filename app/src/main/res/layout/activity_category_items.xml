@@ -15,13 +15,12 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Поле и кнопки для добавления/удаления (видимы только для "Посмотреть позже") -->
     <LinearLayout
         android:id="@+id/addRemoveLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone"> <!-- Изначально скрыто -->
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/newItemEditText"
@@ -43,7 +42,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Добавить"
-                android:onClick="addWatchlistItem"/> <!-- Метод для кнопки Add -->
+                android:onClick="addWatchlistItem"/>
 
             <Button
                 android:id="@+id/removeButton"
@@ -52,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="Удалить выбранные"
                 android:layout_marginStart="8dp"
-                android:onClick="removeWatchlistItems"/> <!-- Метод для кнопки Remove -->
+                android:onClick="removeWatchlistItems"/>
         </LinearLayout>
     </LinearLayout>
 

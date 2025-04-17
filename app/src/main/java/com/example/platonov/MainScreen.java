@@ -1,141 +1,126 @@
 package com.example.platonov; // Свой пакет
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.res.Resources; // Для доступа к ресурсам
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText; // Если нужна строка поиска
+import android.view.MenuItem; // Для MenuItem
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import android.view.Menu; // <-- Импорт для меню
-import android.view.MenuInflater; // <-- Импорт для инфлейтера меню
-import android.view.MenuItem; // <-- Импорт для элемента меню
-import androidx.annotation.NonNull; // <-- Импорт для @NonNull
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar; // Используем Toolbar
+import androidx.core.view.GravityCompat; // Для закрытия Drawer
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment; // Для Фрагментов
 
-import java.util.ArrayList;
-import java.util.List; // Используем List
+import com.example.platonov.fragments.AboutFragment;
+import com.example.platonov.fragments.AllMoviesFragment;
+import com.example.platonov.fragments.WishlistFragment;
+import com.google.android.material.navigation.NavigationView;
 
-public class MainScreen extends AppCompatActivity {
+// Реализуем интерфейс слушателя для NavigationView
+public class MainScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int ADD_MOVIE_REQUEST = 1;
-    private ArrayList<Movie> movieList; // Наш основной список фильмов
-    private MovieAdapter adapter;
-    private RecyclerView recyclerView;
-    private EditText searchField; // Поле поиска
-
-    // Флаг, чтобы не добавлять стартовые данные каждый раз при повороте и т.п.
-    // Лучше использовать ViewModel или сохранение состояния, но для простоты пока так.
-    private static boolean initialDataAdded = false;
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu); // Надуваем наше меню из XML
-        return true; // Меню создано
-    }
-
-    // Метод для обработки нажатий на элементы меню
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId(); // Получаем ID нажатого элемента
-
-        if (id == R.id.action_categories) {
-            // Переход на экран категорий
-            Intent intent = new Intent(this, CategoriesActivity.class);
-            startActivity(intent);
-            return true; // Событие обработано
-        } else if (id == R.id.action_about) {
-            // Переход на экран "О приложении"
-            Intent intent = new Intent(this, AboutActivity.class);
-            startActivity(intent);
-            return true; // Событие обработано
-        }
-
-        // Если не обработали мы, передаем дальше
-        return super.onOptionsItemSelected(item);
-    }
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle; // Убрали public
+    private NavigationView navigationView;
+    private Toolbar toolbar; // Добавили Toolbar
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_screen); // Убедись, что ID RecyclerView в XML = movieRecyclerView
-        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar); // Находим Toolbar по ID
-        setSupportActionBar(toolbar);
-        recyclerView = findViewById(R.id.movieRecyclerView);
-        searchField = findViewById(R.id.searchField); // Найдем поле поиска
-        Button addMovieButton = findViewById(R.id.addMovieButton);
+        setContentView(R.layout.activity_main_screen);
 
-        movieList = new ArrayList<>();
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar); // Устанавливаем Toolbar как ActionBar
 
-        // Предзаполнение списка (только один раз)
-        if (savedInstanceState == null && !initialDataAdded) { // Проверяем savedInstanceState тоже
-            addInitialMovies();
-            initialDataAdded = true;
-        }
-        // TODO: Здесь должна быть логика загрузки сохраненных фильмов из БД/файла,
-        // если initialDataAdded == true или movieList пуст после загрузки.
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
 
-        // Настройка RecyclerView
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MovieAdapter(this, movieList);
-        recyclerView.setAdapter(adapter);
+        // --- Настройка ActionBarDrawerToggle ---
+        toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, // Передаем toolbar
+                R.string.drawer_open, R.string.drawer_close);
 
-        // Кнопка добавления
-        addMovieButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainScreen.this, AddFilm.class); // Переход на твою Activity добавления
-                startActivityForResult(intent, ADD_MOVIE_REQUEST);
-            }
-        });
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState(); // Синхронизируем состояние (показывает иконку-гамбургер)
 
-        // TODO: Добавить TextWatcher для searchField для фильтрации списка adapter.getFilter().filter(text);
-    }
+        // Устанавливаем слушатель для NavigationView
+        navigationView.setNavigationItemSelectedListener(this);
 
-    // Метод предзаполнения
-    private void addInitialMovies() {
-        // Добавь файлы постеров в res/drawable (например, poster_inception.jpg)
-        movieList.add(new Movie("Начало", "Группа воров внедряется в сны...", "Фантастика", getUriStringForDrawable(R.drawable.poster)));
-        movieList.add(new Movie("Интерстеллар", "Путешествие к другим галактикам...", "Научная фантастика", getUriStringForDrawable(R.drawable.poster)));
-        movieList.add(new Movie("Темный рыцарь", "Бэтмен против Джокера...", "Боевик", getUriStringForDrawable(R.drawable.poster)));
-        // Добавь еще...
-
-        // Важно: если используешь базу данных, сохрани эти фильмы и туда.
-    }
-
-    // Вспомогательный метод для получения URI ресурса drawable
-    private String getUriStringForDrawable(int resourceId) {
-        try {
-            // Проверяем существование ресурса
-            Resources res = getResources();
-            return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
-                    "://" + res.getResourcePackageName(resourceId)
-                    + '/' + res.getResourceTypeName(resourceId)
-                    + '/' + res.getResourceEntryName(resourceId)).toString();
-        } catch (Resources.NotFoundException e) {
-            return null; // Возвращаем null, если ресурс не найден
+        // Загружаем начальный фрагмент (если не восстанавливаем состояние)
+        if (savedInstanceState == null) {
+            loadFragment(new AllMoviesFragment());
+            navigationView.setCheckedItem(R.id.nav_all_movies); // Выделяем первый пункт
         }
     }
 
+    // Обработка нажатий на элементы NavigationView
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        Fragment selectedFragment = null;
+
+        if (id == R.id.nav_all_movies) {
+            selectedFragment = new AllMoviesFragment();
+        } else if (id == R.id.nav_explore) {
+            // Переход на вторую Activity (Задание 2)
+            Intent intent = new Intent(MainScreen.this, ExploreActivity.class); // Убедись, что ExploreActivity создана
+            startActivity(intent);
+            // Не меняем фрагмент, просто закрываем drawer
+        } else if (id == R.id.nav_wishlist) {
+            selectedFragment = new WishlistFragment();
+        } else if (id == R.id.nav_about) {
+            selectedFragment = new AboutFragment();
+        }
+
+        // Загружаем выбранный фрагмент, если он не null
+        if (selectedFragment != null) {
+            loadFragment(selectedFragment);
+        }
+
+        // Закрываем DrawerLayout
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true; // Возвращаем true, так как обработали нажатие
+    }
+
+    // Метод для загрузки фрагментов
+    private void loadFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment) // Заменяем содержимое FrameLayout
+                .commit();
+    }
+
+    // Обработка нажатия кнопки "назад"
+    @Override
+    public void onBackPressed() {
+        // Если Drawer открыт, закрываем его
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            // Иначе стандартное поведение кнопки "назад"
+            super.onBackPressed();
+        }
+    }
+
+    // Этот метод нужен, чтобы ActionBarDrawerToggle корректно обрабатывал
+    // нажатие на иконку-гамбургер в ActionBar
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true; // ActionBarDrawerToggle обработал нажатие
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // Переопределяем onActivityResult, чтобы передать его во вложенный фрагмент
+    // (нужно, если фрагмент использует startActivityForResult)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ADD_MOVIE_REQUEST && resultCode == RESULT_OK && data != null) {
-            // Убедись, что AddFilmActivity возвращает Movie с ключом "movie"
-            Movie newMovie = data.getParcelableExtra("movie");
-            if (newMovie != null) {
-                adapter.addMovie(newMovie); // Добавляем через метод адаптера
-                recyclerView.scrollToPosition(adapter.getItemCount() - 1); // Прокрутка к добавленному
-                // TODO: Сохранить newMovie в постоянное хранилище (БД/файл)
-            }
+        // Находим текущий видимый фрагмент и передаем ему результат
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
-
 }
