@@ -39,7 +39,7 @@ public class AddFilm extends AppCompatActivity {
         setContentView(R.layout.activity_add_film); // Убедись, что layout правильный
 
         // Инициализация View (убедись, что ID верные)
-        titleEditText = findViewById(R.id.movieTitle);
+        titleEditText = findViewById(R.id.titleEditText);
         descriptionEditText = findViewById(R.id.descriptionEditText);
         genreSpinner = findViewById(R.id.genreSpinner);
         posterPreviewImageView = findViewById(R.id.posterPreviewImageView); // Важный ImageView

@@ -11,11 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.platonov.AddFilm; // Импорт Activity добавления
+import com.example.platonov.FilmDetails;
 import com.example.platonov.Movie;
 import com.example.platonov.MovieAdapter;
 import com.example.platonov.R;
@@ -29,6 +32,7 @@ public class AllMoviesFragment extends Fragment {
     private ArrayList<Movie> movieList = new ArrayList<>(); // Список фильмов для этого фрагмента
     private MovieAdapter adapter;
     private RecyclerView recyclerView;
+    private static final int VIEW_MOVIE_DETAILS_REQUEST = 1001;
     private static boolean initialDataAddedFragment = false; // Отдельный флаг для фрагмента
 
     public AllMoviesFragment() {
@@ -96,15 +100,40 @@ public class AllMoviesFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Проверяем код запроса и результат
-        if (requestCode == ADD_MOVIE_REQUEST_FRAGMENT && resultCode == Activity.RESULT_OK && data != null) {
-            Movie newMovie = data.getParcelableExtra("movie");
-            if (newMovie != null) {
-                adapter.addMovie(newMovie);
-                if (recyclerView != null) { // Проверка на null
-                    recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+
+        Log.d("AllMoviesFragment", "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode); // Лог для отладки
+
+        if (requestCode == VIEW_MOVIE_DETAILS_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            // Проверяем, был ли фильм удален (используем ключ из FilmDetails)
+            if (data.hasExtra(FilmDetails.EXTRA_DELETED_MOVIE_TITLE)) {
+                String deletedTitle = data.getStringExtra(FilmDetails.EXTRA_DELETED_MOVIE_TITLE);
+                Log.d("AllMoviesFragment", "Received deleted movie title: " + deletedTitle); // Лог
+
+                if (deletedTitle != null && movieList != null && adapter != null) {
+                    // Находим и удаляем фильм из списка
+                    Movie movieToRemove = null;
+                    int positionToRemove = -1;
+                    for (int i = 0; i < movieList.size(); i++) {
+                        Movie movie = movieList.get(i);
+                        if (movie != null && deletedTitle.equals(movie.getTitle())) {
+                            movieToRemove = movie;
+                            positionToRemove = i;
+                            break;
+                        }
+                    }
+
+                    if (movieToRemove != null && positionToRemove != -1) {
+                        movieList.remove(positionToRemove);
+                        // Уведомляем адаптер об удалении конкретного элемента
+                        adapter.notifyItemRemoved(positionToRemove);
+                        // Опционально: обновить диапазон, если порядок важен
+                        adapter.notifyItemRangeChanged(positionToRemove, movieList.size());
+                        Log.d("AllMoviesFragment", "Movie removed from list and adapter notified."); // Лог
+                        // TODO: Убедись, что фильм также удален из постоянного хранилища!
+                    } else {
+                        Log.w("AllMoviesFragment", "Movie with title '" + deletedTitle + "' not found in the list."); // Лог
+                    }
                 }
-                // TODO: Сохранить newMovie в БД/хранилище
             }
         }
     }

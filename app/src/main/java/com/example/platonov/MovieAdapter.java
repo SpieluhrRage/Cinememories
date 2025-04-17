@@ -1,5 +1,6 @@
 package com.example.platonov; // Замени на свой пакет
 
+import android.app.Activity;
 import android.content.ContentResolver; // Для проверки схемы URI
 import android.content.Context;
 import android.content.Intent;
@@ -112,9 +113,29 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 int currentPosition = holder.getAdapterPosition();
                 if (currentPosition != RecyclerView.NO_POSITION) {
                     Movie clickedMovie = movieList.get(currentPosition);
-                    Intent intent = new Intent(context, FilmDetails.class);
+                    Intent intent = new Intent(context, FilmDetails.class); // Используй имя FilmDetails
                     intent.putExtra("movie", clickedMovie);
-                    context.startActivity(intent);
+
+                    // --- Изменение здесь: Запускаем для получения результата ---
+                    // Определяем код запроса (лучше вынести в константы класса Fragment или Activity)
+                    final int VIEW_MOVIE_DETAILS_REQUEST = 1001;
+
+                    // Проверяем, что context является Activity или получаем Activity из Fragment'а
+                    if (context instanceof Activity) {
+                        ((Activity) context).startActivityForResult(intent, VIEW_MOVIE_DETAILS_REQUEST);
+                    } else {
+                        // Если адаптер используется во Фрагменте, нужен другой подход:
+                        // Либо передавать Fragment в конструктор адаптера, либо использовать интерфейс-callback
+                        // Простой вариант (менее надежный): попытка получить Activity из View
+                        View rootView = holder.itemView.getRootView();
+                        if (rootView.getContext() instanceof Activity) {
+                            ((Activity) rootView.getContext()).startActivityForResult(intent, VIEW_MOVIE_DETAILS_REQUEST);
+                        } else {
+                            // Не удалось запустить для результата стандартным способом
+                            Log.e("MovieAdapter", "Cannot start Activity for result from this context");
+                            context.startActivity(intent); // Запускаем без ожидания результата как запасной вариант
+                        }
+                    }
                 }
                 else {
                     Log.e("MovieAdapter", "Clicked movie is null at position: " + currentPosition);

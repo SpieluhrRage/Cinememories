@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.WishlistFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/wishlistListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Wishlist fragment" />
+        android:layout_alignParentTop="true"
+        android:paddingBottom="80dp"  /> <!-- Добавим отступ снизу, чтобы FAB не перекрывал последний элемент -->
 
-</FrameLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddWishlistItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="Добавить фильм в список"
+        app:srcCompat="@drawable/add_24dp_b46643_fill0_wght400_grad0_opsz24" /> <!-- Убедись, что иконка ic_add есть в drawable -->
+
+</RelativeLayout>

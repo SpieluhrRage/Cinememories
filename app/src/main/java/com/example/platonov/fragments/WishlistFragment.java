@@ -1,59 +1,56 @@
 package com.example.platonov.fragments;
 
+import android.app.Dialog; // Для Custom Dialog
+import android.app.TimePickerDialog;
+import android.content.Context; // Для доступа к ресурсам/контексту
 import android.os.Bundle;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button; // Для кнопок в диалоге
+import android.widget.EditText; // Для поля ввода в диалоге
+import android.widget.ListView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.platonov.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton; // Для FAB
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WishlistFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class WishlistFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private ListView wishlistListView;
+    private FloatingActionButton fabAddWishlistItem;
+    private ArrayList<String> wishlistItems; // Список названий фильмов
+    private ArrayAdapter<String> itemsAdapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // Переменные для хранения последнего выбранного времени (опционально, для удобства)
+    private int lastSelectedHour = -1;
+    private int lastSelectedMinute = -1;
 
     public WishlistFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WishlistFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static WishlistFragment newInstance(String param1, String param2) {
-        WishlistFragment fragment = new WishlistFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        // Инициализируем список здесь, чтобы он сохранялся при пересоздании View
+        wishlistItems = new ArrayList<>();
+        // TODO: Загрузить сохраненный wishlistItems из SharedPreferences или БД
+        // loadWishlist();
+        // Добавим начальные данные для примера, если список пуст
+        if (wishlistItems.isEmpty()){
+            wishlistItems.add("Пример фильма 1 (нажми для установки времени)");
+            wishlistItems.add("Пример фильма 2");
         }
     }
 
@@ -61,6 +58,96 @@ public class WishlistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wishlist, container, false);
+        View view = inflater.inflate(R.layout.fragment_wishlist, container, false);
+
+        wishlistListView = view.findViewById(R.id.wishlistListView);
+        fabAddWishlistItem = view.findViewById(R.id.fabAddWishlistItem);
+
+        // Используем requireContext() для получения не-null контекста
+        Context context = requireContext();
+
+        // Создаем и устанавливаем адаптер
+        itemsAdapter = new ArrayAdapter<>(context,
+                android.R.layout.simple_list_item_1, // Простой макет для одного элемента
+                wishlistItems);
+        wishlistListView.setAdapter(itemsAdapter);
+
+        // --- Обработчик нажатия на элемент списка (для TimePickerDialog) ---
+        wishlistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedMovie = itemsAdapter.getItem(position);
+                showTimePickerDialog(context, selectedMovie); // Вызываем метод показа TimePickerDialog
+            }
+        });
+
+        // --- Обработчик нажатия на FAB (для Custom Dialog) ---
+        fabAddWishlistItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddMovieDialog(context); // Вызываем метод показа Custom Dialog
+            }
+        });
+
+        return view;
     }
+
+    // --- Метод для показа TimePickerDialog ---
+    private void showTimePickerDialog(Context context, final String movieTitle) {
+        final Calendar c = Calendar.getInstance();
+        // Используем последние выбранные значения или текущее время
+        int hour = (lastSelectedHour != -1) ? lastSelectedHour : c.get(Calendar.HOUR_OF_DAY);
+        int minute = (lastSelectedMinute != -1) ? lastSelectedMinute : c.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        lastSelectedHour = hourOfDay; // Сохраняем для удобства
+                        lastSelectedMinute = minute;
+                        String timeString = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+
+                        // Передача данных: Показываем Toast с выбранным временем и названием фильма
+                        Toast.makeText(context, "Установить напоминание для '" + movieTitle + "' на " + timeString + "?", Toast.LENGTH_LONG).show();
+                        // TODO: Реализовать реальную установку напоминания (например, через AlarmManager)
+                    }
+                }, hour, minute, true); // true для 24-часового формата
+        timePickerDialog.setTitle("Установить время напоминания"); // Устанавливаем заголовок
+        timePickerDialog.show();
+    }
+
+    // --- Метод для показа Custom Dialog добавления фильма ---
+    private void showAddMovieDialog(Context context) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_and_wishlist_item); // Наш кастомный макет
+        dialog.setTitle("Добавить фильм"); // Устанавливаем заголовок окна диалога
+
+        EditText movieTitleEditText = dialog.findViewById(R.id.movieTitleEditText);
+        Button cancelButton = dialog.findViewById(R.id.cancel_button);
+        Button addButton = dialog.findViewById(R.id.add_button);
+
+        cancelButton.setOnClickListener(v -> dialog.dismiss()); // Закрыть по кнопке Отмена
+
+        addButton.setOnClickListener(v -> {
+            String movieTitle = movieTitleEditText.getText().toString().trim();
+            if (!movieTitle.isEmpty()) {
+                // Передача данных: Добавляем фильм в список и обновляем адаптер
+                wishlistItems.add(movieTitle);
+                itemsAdapter.notifyDataSetChanged(); // Обновляем ListView
+                // TODO: Сохранить обновленный wishlistItems в SharedPreferences или БД
+                // saveWishlist();
+                Toast.makeText(context, "'" + movieTitle + "' добавлен в список", Toast.LENGTH_SHORT).show();
+                dialog.dismiss(); // Закрываем диалог
+            } else {
+                Toast.makeText(context, "Введите название фильма", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dialog.show(); // Показываем диалог
+    }
+
+    // TODO: Методы для сохранения/загрузки списка wishlistItems
+    // private void saveWishlist() { ... }
+    // private void loadWishlist() { ... }
+
 }
