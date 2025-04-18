@@ -92,10 +92,8 @@ public class WishlistFragment extends Fragment {
         return view;
     }
 
-    // --- Метод для показа TimePickerDialog ---
     private void showTimePickerDialog(Context context, final String movieTitle) {
         final Calendar c = Calendar.getInstance();
-        // Используем последние выбранные значения или текущее время
         int hour = (lastSelectedHour != -1) ? lastSelectedHour : c.get(Calendar.HOUR_OF_DAY);
         int minute = (lastSelectedMinute != -1) ? lastSelectedMinute : c.get(Calendar.MINUTE);
 
@@ -106,48 +104,40 @@ public class WishlistFragment extends Fragment {
                         lastSelectedHour = hourOfDay; // Сохраняем для удобства
                         lastSelectedMinute = minute;
                         String timeString = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-
-                        // Передача данных: Показываем Toast с выбранным временем и названием фильма
                         Toast.makeText(context, "Установить напоминание для '" + movieTitle + "' на " + timeString + "?", Toast.LENGTH_LONG).show();
-                        // TODO: Реализовать реальную установку напоминания (например, через AlarmManager)
+
                     }
-                }, hour, minute, true); // true для 24-часового формата
-        timePickerDialog.setTitle("Установить время напоминания"); // Устанавливаем заголовок
+                }, hour, minute, true);
+        timePickerDialog.setTitle("Установить время напоминания");
         timePickerDialog.show();
     }
 
     // --- Метод для показа Custom Dialog добавления фильма ---
     private void showAddMovieDialog(Context context) {
         final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog_and_wishlist_item); // Наш кастомный макет
-        dialog.setTitle("Добавить фильм"); // Устанавливаем заголовок окна диалога
+        dialog.setContentView(R.layout.dialog_and_wishlist_item);
+        dialog.setTitle("Добавить фильм");
 
         EditText movieTitleEditText = dialog.findViewById(R.id.movieTitleEditText);
         Button cancelButton = dialog.findViewById(R.id.cancel_button);
         Button addButton = dialog.findViewById(R.id.add_button);
 
-        cancelButton.setOnClickListener(v -> dialog.dismiss()); // Закрыть по кнопке Отмена
+        cancelButton.setOnClickListener(v -> dialog.dismiss());
 
         addButton.setOnClickListener(v -> {
             String movieTitle = movieTitleEditText.getText().toString().trim();
             if (!movieTitle.isEmpty()) {
-                // Передача данных: Добавляем фильм в список и обновляем адаптер
                 wishlistItems.add(movieTitle);
-                itemsAdapter.notifyDataSetChanged(); // Обновляем ListView
-                // TODO: Сохранить обновленный wishlistItems в SharedPreferences или БД
-                // saveWishlist();
+                itemsAdapter.notifyDataSetChanged();
                 Toast.makeText(context, "'" + movieTitle + "' добавлен в список", Toast.LENGTH_SHORT).show();
-                dialog.dismiss(); // Закрываем диалог
+                dialog.dismiss();
             } else {
                 Toast.makeText(context, "Введите название фильма", Toast.LENGTH_SHORT).show();
             }
         });
 
-        dialog.show(); // Показываем диалог
+        dialog.show();
     }
 
-    // TODO: Методы для сохранения/загрузки списка wishlistItems
-    // private void saveWishlist() { ... }
-    // private void loadWishlist() { ... }
 
 }

@@ -126,10 +126,9 @@ public class FilmDetails extends AppCompatActivity {
         // }
     }
 
-    // Метод для показа DatePickerDialog
+
     private void showDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
-        // Используем сохраненные значения, если они есть, иначе текущую дату
         int initialYear = (watchedYear != 0) ? watchedYear : c.get(Calendar.YEAR);
         int initialMonth = (watchedMonth != 0) ? watchedMonth : c.get(Calendar.MONTH);
         int initialDay = (watchedDay != 0) ? watchedDay : c.get(Calendar.DAY_OF_MONTH);
@@ -138,23 +137,16 @@ public class FilmDetails extends AppCompatActivity {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        // Сохраняем выбранные значения локально
                         watchedYear = year;
-                        watchedMonth = monthOfYear; // Месяц 0-11
+                        watchedMonth = monthOfYear;
                         watchedDay = dayOfMonth;
 
-                        // Форматируем дату и обновляем TextView
                         String selectedDate = String.format(Locale.getDefault(), "%02d.%02d.%d", watchedDay, (watchedMonth + 1), watchedYear);
                         watchedDateTextView.setText("Дата просмотра: " + selectedDate);
 
-                        // TODO: Сохранить выбранную дату (selectedDate) в объекте currentMovie
-                        //       и обновить запись в базе данных/хранилище.
-                        // currentMovie.setWatchedDate(selectedDate); // Если добавили поле в Movie
-                        // updateMovieInDatabase(currentMovie);
-
                         Toast.makeText(FilmDetails.this, "Дата просмотра установлена", Toast.LENGTH_SHORT).show();
                     }
-                }, initialYear, initialMonth, initialDay); // Передаем начальные значения
+                }, initialYear, initialMonth, initialDay);
 
         datePickerDialog.show();
     }
@@ -168,12 +160,11 @@ public class FilmDetails extends AppCompatActivity {
                 .setTitle("Подтверждение удаления")
                 .setMessage("Вы уверены, что хотите удалить фильм \"" + currentMovie.getTitle() + "\"?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton("Удалить", (dialog, whichButton) -> performDelete()) // Лямбда для краткости
+                .setPositiveButton("Удалить", (dialog, whichButton) -> performDelete())
                 .setNegativeButton("Отмена", null)
                 .show();
     }
 
-    // Метод для выполнения удаления (остается без изменений)
     private void performDelete() {
         if (currentMovie == null) return;
         Log.d("FilmDetails", "Имитация удаления фильма: " + currentMovie.getTitle());
