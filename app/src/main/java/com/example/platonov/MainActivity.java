@@ -1,36 +1,67 @@
 package com.example.platonov;
 
+import android.os.Bundle;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText editTextName;
-    private EditText editTextSurname;
-    private Button buttonNext;
+    private Button startButton;
+    private Button stopButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editTextName = findViewById(R.id.editTextName);
-        editTextSurname = findViewById(R.id.editTextSurname);
-        buttonNext = findViewById(R.id.buttonNext);
+        startButton = findViewById(R.id.startButton);
+        stopButton = findViewById(R.id.stopButton);
 
-        buttonNext.setOnClickListener(v -> {
-            String name = editTextName.getText().toString();
-            String surname = editTextSurname.getText().toString();
-
-            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-            intent.putExtra("name", name);
-            intent.putExtra("surname", surname);
-            startActivity(intent);
+        // --- Запуск сервиса по кнопке ---
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startIntent = new Intent(MainActivity.this, MusicService.class);
+                startService(startIntent);
+                // Можно деактивировать кнопку запуска и активировать кнопку остановки
+                // startButton.setEnabled(false);
+                // stopButton.setEnabled(true);
+            }
         });
+
+        // --- Остановка сервиса по кнопке ---
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent stopIntent = new Intent(MainActivity.this, MusicService.class);
+                stopService(stopIntent);
+                // Можно активировать кнопку запуска и деактивировать кнопку остановки
+                // startButton.setEnabled(true);
+                // stopButton.setEnabled(false);
+            }
+        });
+
+        // Опционально: Запуск сервиса при старте Activity (как в методичке, но без явного вызова)
+        // Intent startIntentOnCreate = new Intent(this, MusicService.class);
+        // startService(startIntentOnCreate);
     }
+
+    // Опционально: Остановка сервиса при уничтожении Activity (как в методичке)
+    // @Override
+    // protected void onDestroy() {
+    //     super.onDestroy();
+    //     // Остановка сервиса и музыки при уничтожении активности
+    //     Intent stopIntent = new Intent(this, MusicService.class);
+    //     stopService(stopIntent);
+    // }
 }
