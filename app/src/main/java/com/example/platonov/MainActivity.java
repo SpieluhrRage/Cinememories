@@ -27,33 +27,23 @@ public class MainActivity extends AppCompatActivity {
         startButton = findViewById(R.id.startButton);
         stopButton = findViewById(R.id.stopButton);
 
-        // --- Запуск сервиса по кнопке ---
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent startIntent = new Intent(MainActivity.this, MusicService.class);
                 startService(startIntent);
-                // Можно деактивировать кнопку запуска и активировать кнопку остановки
-                // startButton.setEnabled(false);
-                // stopButton.setEnabled(true);
+;
             }
         });
 
-        // --- Остановка сервиса по кнопке ---
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent stopIntent = new Intent(MainActivity.this, MusicService.class);
                 stopService(stopIntent);
-                // Можно активировать кнопку запуска и деактивировать кнопку остановки
-                // startButton.setEnabled(true);
-                // stopButton.setEnabled(false);
             }
         });
 
-        // Опционально: Запуск сервиса при старте Activity (как в методичке, но без явного вызова)
-        // Intent startIntentOnCreate = new Intent(this, MusicService.class);
-        // startService(startIntentOnCreate);
     }
 
     // Опционально: Остановка сервиса при уничтожении Activity (как в методичке)
