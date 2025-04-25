@@ -5,28 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:padding="16dp"
+    android:gravity="center_horizontal"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Music Service Example"
-        android:textSize="20sp"
-        android:layout_marginBottom="32dp"/>
-
     <Button
-        android:id="@+id/startButton"
+        android:id="@+id/btnSequential"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Запустить сервис (музыку)"
+        android:text="Запустить 3 задачи последовательно"
         android:layout_marginBottom="16dp"/>
 
     <Button
-        android:id="@+id/stopButton"
+        android:id="@+id/btnParallel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Остановить сервис (музыку)"/>
+        android:text="Запустить 2 задачи параллельно"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnLoadImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Загрузить картинку собаки"
+        android:layout_marginBottom="16dp"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="Image from API"
+        android:scaleType="centerCrop"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 </LinearLayout>
