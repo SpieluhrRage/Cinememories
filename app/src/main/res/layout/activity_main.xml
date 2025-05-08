@@ -6,37 +6,112 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:gravity="center_horizontal"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnSequential"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/editFileName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Запустить 3 задачи последовательно"
+        android:hint="Название файла (внутр. хранилище)"
+        android:inputType="text"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/editFileContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Содержимое файла"
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        android:gravity="top"
         android:layout_marginBottom="16dp"/>
 
-    <Button
-        android:id="@+id/btnParallel"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Сохранить/Перезаписать"/>
+
+        <Button
+            android:id="@+id/btnAppend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Добавить"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btnRead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Прочитать"/>
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Удалить"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Запустить 2 задачи параллельно"
-        android:layout_marginBottom="16dp"/>
+        android:text="Прочитанное содержимое:"
+        android:textStyle="bold"/>
 
-    <Button
-        android:id="@+id/btnLoadImage"
+    <TextView
+        android:id="@+id/tvFileContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#EEEEEE"
+        android:padding="8dp"
+        android:minHeight="50dp"
+        android:text=""/>
+
+    <!-- Кнопки для Задания 3 (внешнее хранилище) -->
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Загрузить картинку собаки"
-        android:layout_marginBottom="16dp"/>
+        android:text="Внешнее хранилище:"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"/>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="20dp"
-        android:contentDescription="Image from API"
-        android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+    <Button
+        android:id="@+id/btnSaveExternal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сохранить во внешнее"/>
+    <Button
+        android:id="@+id/btnReadExternal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Прочитать из внешнего"/>
+    <Button
+        android:id="@+id/btnDeleteExternal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Удалить из внешнего"/>
+
+
 
 </LinearLayout>
