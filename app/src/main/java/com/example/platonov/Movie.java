@@ -1,72 +1,104 @@
-package com.example.platonov; // Замени на свой пакет
+    package com.example.platonov;
 
-import android.net.Uri;
-import android.os.Parcel;
-import android.os.Parcelable;
+    import android.os.Parcel;
+    import android.os.Parcelable;
 
-public class Movie implements Parcelable {
-    private String title;
-    private String description;
-    private String genre; // Добавим поле для жанра
-    private String posterUri; // Строка для URI постера
+    public class Movie implements Parcelable {
+        private long id;
+        private String title;
+        private String description;
+        private String genre;
+        private String posterUri;
+        private String releaseDate; // Дата выхода фильма
+        private String watchedDate; // Дата просмотра фильма
 
-    // Конструкторы (можешь добавить/изменить по необходимости)
-    public Movie(String title, String description, String genre, String posterUri) {
-        this.title = title;
-        this.description = description;
-        this.genre = genre;
-        this.posterUri = posterUri;
-    }
+        // Конструктор для создания нового фильма (ID будет присвоен БД)
+        public Movie(String title, String description, String genre, String posterUri, String releaseDate, String watchedDate) {
+            this.id = -1;
+            this.title = title;
+            this.description = description;
+            this.genre = genre;
+            this.posterUri = posterUri;
+            this.releaseDate = releaseDate;
+            this.watchedDate = watchedDate;
+        }
 
-    // Getters
-    public String getTitle() { return title; }
-    public String getDescription() { return description; }
-    public String getGenre() { return genre; }
-    public String getPosterUri() { return posterUri; }
-
-    // Setters (если нужны для редактирования)
-    public void setTitle(String title) { this.title = title; }
-    public void setDescription(String description) { this.description = description; }
-    public void setGenre(String genre) { this.genre = genre; }
-    public void setPosterUri(String posterUri) { this.posterUri = posterUri; }
+        // Более простой конструктор для нового фильма без дат по умолчанию
+        public Movie(String title, String description, String genre, String posterUri) {
+            this(title, description, genre, posterUri, null, null);
+        }
 
 
-    // --- Parcelable реализация ---
-    protected Movie(Parcel in) {
-        title = in.readString();
-        description = in.readString();
-        genre = in.readString();
-        posterUri = in.readString();
-    }
+        // Конструктор для создания фильма из данных БД (с ID и датами)
+        public Movie(long id, String title, String description, String genre, String posterUri, String releaseDate, String watchedDate) {
+            this.id = id;
+            this.title = title;
+            this.description = description;
+            this.genre = genre;
+            this.posterUri = posterUri;
+            this.releaseDate = releaseDate;
+            this.watchedDate = watchedDate;
+        }
+        // Конструктор для создания фильма из данных БД (с ID, если даты могут быть null)
+        public Movie(long id, String title, String description, String genre, String posterUri) {
+            this(id, title, description, genre, posterUri, null, null);
+        }
 
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+
+        // Getters
+        public long getId() { return id; }
+        public String getTitle() { return title; }
+        public String getDescription() { return description; }
+        public String getGenre() { return genre; }
+        public String getPosterUri() { return posterUri; }
+        public String getReleaseDate() { return releaseDate; }
+        public String getWatchedDate() { return watchedDate; }
+
+        // Setters
+        public void setId(long id) { this.id = id; }
+        public void setTitle(String title) { this.title = title; }
+        public void setDescription(String description) { this.description = description; }
+        public void setGenre(String genre) { this.genre = genre; }
+        public void setPosterUri(String posterUri) { this.posterUri = posterUri; }
+        public void setReleaseDate(String releaseDate) { this.releaseDate = releaseDate; }
+        public void setWatchedDate(String watchedDate) { this.watchedDate = watchedDate; }
+
+        // Parcelable реализация
+        protected Movie(Parcel in) {
+            id = in.readLong();
+            title = in.readString();
+            description = in.readString();
+            genre = in.readString();
+            posterUri = in.readString();
+            releaseDate = in.readString(); // Читаем дату выхода
+            watchedDate = in.readString(); // Читаем дату просмотра
+        }
+
+        public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+            @Override
+            public Movie createFromParcel(Parcel in) {
+                return new Movie(in);
+            }
+            @Override
+            public Movie[] newArray(int size) {
+                return new Movie[size];
+            }
+        };
+
         @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
+        public int describeContents() { return 0; }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeLong(id);
+            dest.writeString(title);
+            dest.writeString(description);
+            dest.writeString(genre);
+            dest.writeString(posterUri);
+            dest.writeString(releaseDate); // Пишем дату выхода
+            dest.writeString(watchedDate); // Пишем дату просмотра
         }
 
         @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
+        public String toString() { return title; }
     }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeString(description);
-        dest.writeString(genre);
-        dest.writeString(posterUri);
-    }
-
-    // Переопределим toString() для удобства отображения в простом ArrayAdapter, если понадобится
-    @Override
-    public String toString() {
-        return title; // Показываем только название в простом списке
-    }
-}

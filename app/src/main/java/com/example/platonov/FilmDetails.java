@@ -1,89 +1,76 @@
 package com.example.platonov;
 
 import android.app.Activity;
-import android.app.DatePickerDialog; // Импорт DatePickerDialog
-import android.content.DialogInterface;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker; // Импорт DatePicker
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import java.util.Calendar; // Импорт Calendar
-import java.util.Locale;  // Импорт Locale
+import com.example.platonov.db.DatabaseHelper;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public class FilmDetails extends AppCompatActivity {
     private TextView titleTextView;
     private TextView descriptionTextView;
     private TextView genreTextView;
+    private TextView yearTextView;
     private ImageView posterImageView;
     private Button backButton;
     private Button deleteButton;
-    // Новые элементы для даты просмотра
+    private Button editButton; // Добавили кнопку редактирования
     private TextView watchedDateTextView;
     private Button setDateButton;
 
     private Movie currentMovie;
+    private DatabaseHelper dbHelper;
 
-    // Переменные для хранения последней выбранной даты
     private int watchedYear = 0;
-    private int watchedMonth = 0; // 0-11
+    private int watchedMonth = 0;
     private int watchedDay = 0;
 
-    public static final String EXTRA_DELETED_MOVIE_TITLE = "com.example.platonov.DELETED_MOVIE_TITLE";
+    public static final String EXTRA_DELETED_MOVIE_ID = "com.example.platonov.DELETED_MOVIE_ID";
+    public static final String EXTRA_UPDATED_MOVIE_ID = "com.example.platonov.UPDATED_MOVIE_ID";
+    private static final int EDIT_MOVIE_REQUEST = 3; // Код запроса для редактирования
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // EdgeToEdge.enable(this);
         setContentView(R.layout.activity_film_details);
-        /*
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        */
 
-        // Находим все View
+        dbHelper = new DatabaseHelper(this);
+
         titleTextView = findViewById(R.id.movieTitle);
         descriptionTextView = findViewById(R.id.movieDescription);
         genreTextView = findViewById(R.id.movieGenre);
+        yearTextView = findViewById(R.id.movieYear);
         posterImageView = findViewById(R.id.moviePoster);
         backButton = findViewById(R.id.backButton);
         deleteButton = findViewById(R.id.deleteButton);
-        watchedDateTextView = findViewById(R.id.watchedDateTextView); // Находим TextView для даты
-        setDateButton = findViewById(R.id.setDateButton);         // Находим Button для даты
+        editButton = findViewById(R.id.editButton); // Находим кнопку
+        watchedDateTextView = findViewById(R.id.watchedDateTextView);
+        setDateButton = findViewById(R.id.setDateButton);
 
         Intent intent = getIntent();
-
         if (intent != null && intent.hasExtra("movie")) {
             currentMovie = intent.getParcelableExtra("movie");
-
             if (currentMovie != null) {
-                populateMovieDetails(); // Вынесем заполнение данных в отдельный метод
-
-                // Настраиваем слушателей кнопок
+                populateMovieDetails();
                 backButton.setOnClickListener(v -> finish());
                 deleteButton.setOnClickListener(v -> showDeleteConfirmationDialog());
-                // Добавляем слушатель для кнопки даты
+                editButton.setOnClickListener(v -> startEditActivity()); // Устанавливаем слушатель
                 setDateButton.setOnClickListener(v -> showDatePickerDialog());
-
-                // TODO: Загрузить сохраненную дату просмотра из currentMovie, если она там есть
-                // и обновить watchedYear, watchedMonth, watchedDay и watchedDateTextView
-
             } else {
                 handleDataError("Movie object received from Intent is null");
             }
@@ -92,40 +79,63 @@ public class FilmDetails extends AppCompatActivity {
         }
     }
 
-    // Метод для заполнения деталей фильма
+    private void startEditActivity() {
+        if (currentMovie != null) {
+            Intent editIntent = new Intent(FilmDetails.this, AddFilm.class);
+            editIntent.putExtra(AddFilm.EXTRA_MOVIE_TO_EDIT, currentMovie);
+            startActivityForResult(editIntent, EDIT_MOVIE_REQUEST);
+        } else {
+            Toast.makeText(this, "Ошибка: нет данных для редактирования", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void populateMovieDetails() {
+        if (currentMovie == null) return;
         titleTextView.setText(currentMovie.getTitle());
         descriptionTextView.setText(currentMovie.getDescription());
+        yearTextView.setText("Год: (нет данных)");
+        if (currentMovie.getReleaseDate() != null && !currentMovie.getReleaseDate().isEmpty()) {
+            yearTextView.setText("Год выхода: " + currentMovie.getReleaseDate());
+        } else {
+            yearTextView.setText("Год выхода: не указан");
+        }// Заглушка
 
-        if (genreTextView != null && currentMovie.getGenre() != null) {
+        if (currentMovie.getGenre() != null) {
             genreTextView.setText("Жанр: " + currentMovie.getGenre());
-        } else if (genreTextView != null) {
+        } else {
             genreTextView.setText("Жанр: Не указан");
         }
 
         String posterUriString = currentMovie.getPosterUri();
         if (posterUriString != null && !posterUriString.isEmpty()) {
             try {
-                Uri posterUri = Uri.parse(posterUriString);
-                posterImageView.setImageURI(posterUri);
+                posterImageView.setImageURI(Uri.parse(posterUriString));
             } catch (Exception e) {
                 Log.e("FilmDetails", "Error loading poster URI: " + posterUriString, e);
-                posterImageView.setImageResource(R.drawable.poster);
+                posterImageView.setImageResource(R.drawable.poster); // Заглушка по умолчанию
             }
         } else {
-            posterImageView.setImageResource(R.drawable.poster);
+            posterImageView.setImageResource(R.drawable.poster); // Заглушка по умолчанию
+        }
+        if (currentMovie.getWatchedDate() != null && !currentMovie.getWatchedDate().isEmpty()) {
+            watchedDateTextView.setText("Дата просмотра: " + currentMovie.getWatchedDate());
+            // Инициализация watchedYear, watchedMonth, watchedDay для DatePicker
+            try {
+                String[] dateParts = currentMovie.getWatchedDate().split("\\.");
+                if (dateParts.length == 3) {
+                    watchedDay = Integer.parseInt(dateParts[0]);
+                    watchedMonth = Integer.parseInt(dateParts[1]) - 1; // месяцы 0-11
+                    watchedYear = Integer.parseInt(dateParts[2]);
+                }
+            } catch (Exception e) {
+                Log.e("FilmDetails", "Error parsing watched date for DatePicker init", e);
+            }
+        } else {
+            watchedDateTextView.setText("Дата просмотра: не указана");
+            watchedDay = 0; watchedMonth = 0; watchedYear = 0; // Сброс для DatePicker
         }
 
-        // TODO: Отобразить сохраненную дату просмотра, если она есть в currentMovie
-        // String savedDate = currentMovie.getWatchedDate(); // Предполагаем наличие метода
-        // if (savedDate != null && !savedDate.isEmpty()) {
-        //     watchedDateTextView.setText("Дата просмотра: " + savedDate);
-        // Тут же нужно распарсить savedDate и обновить watchedYear, watchedMonth, watchedDay
-        // } else {
-        watchedDateTextView.setText("Дата просмотра: не указана");
-        // }
     }
-
 
     private void showDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
@@ -134,51 +144,80 @@ public class FilmDetails extends AppCompatActivity {
         int initialDay = (watchedDay != 0) ? watchedDay : c.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        watchedYear = year;
-                        watchedMonth = monthOfYear;
-                        watchedDay = dayOfMonth;
-
-                        String selectedDate = String.format(Locale.getDefault(), "%02d.%02d.%d", watchedDay, (watchedMonth + 1), watchedYear);
-                        watchedDateTextView.setText("Дата просмотра: " + selectedDate);
-
-                        Toast.makeText(FilmDetails.this, "Дата просмотра установлена", Toast.LENGTH_SHORT).show();
+                (view, year, monthOfYear, dayOfMonth) -> {
+                    watchedYear = year;
+                    watchedMonth = monthOfYear;
+                    watchedDay = dayOfMonth;
+                    String selectedDate = String.format(Locale.getDefault(), "%02d.%02d.%d", watchedDay, (watchedMonth + 1), watchedYear);
+                    watchedDateTextView.setText("Дата просмотра: " + selectedDate);
+                    if (currentMovie != null) {
+                        currentMovie.setWatchedDate(selectedDate); // Устанавливаем дату в объект
+                        int updatedRows = dbHelper.updateMovie(currentMovie); // Обновляем в БД
+                        if (updatedRows > 0) {
+                            Toast.makeText(FilmDetails.this, "Дата просмотра сохранена", Toast.LENGTH_SHORT).show();
+                            // Уведомляем AllMoviesFragment, что данные фильма изменились
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra(FilmDetails.EXTRA_UPDATED_MOVIE_ID, currentMovie.getId());
+                            setResult(Activity.RESULT_OK, resultIntent);
+                        } else {
+                            Toast.makeText(FilmDetails.this, "Ошибка сохранения даты просмотра", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                    Toast.makeText(FilmDetails.this, "Дата просмотра установлена", Toast.LENGTH_SHORT).show();
                 }, initialYear, initialMonth, initialDay);
-
         datePickerDialog.show();
     }
 
-
-    // Метод для показа AlertDialog (остается без изменений)
     private void showDeleteConfirmationDialog() {
         if (currentMovie == null) return;
-
         new AlertDialog.Builder(this)
                 .setTitle("Подтверждение удаления")
                 .setMessage("Вы уверены, что хотите удалить фильм \"" + currentMovie.getTitle() + "\"?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton("Удалить", (dialog, whichButton) -> performDelete())
+                .setPositiveButton("Удалить", (dialog, which) -> performDelete())
                 .setNegativeButton("Отмена", null)
                 .show();
     }
 
     private void performDelete() {
-        if (currentMovie == null) return;
-        Log.d("FilmDetails", "Имитация удаления фильма: " + currentMovie.getTitle());
-        Toast.makeText(this, "Фильм \"" + currentMovie.getTitle() + "\" удален", Toast.LENGTH_SHORT).show();
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(EXTRA_DELETED_MOVIE_TITLE, currentMovie.getTitle());
-        setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+        if (currentMovie == null || currentMovie.getId() == -1) {
+            Toast.makeText(this, "Невозможно удалить: ID фильма неизвестен", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int deletedRows = dbHelper.deleteMovie(currentMovie.getId());
+        if (deletedRows > 0) {
+            Toast.makeText(this, "Фильм \"" + currentMovie.getTitle() + "\" удален", Toast.LENGTH_SHORT).show();
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra(EXTRA_DELETED_MOVIE_ID, currentMovie.getId());
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+        } else {
+            Toast.makeText(this, "Ошибка удаления фильма из базы данных", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    // Обработка ошибок (остается без изменений)
     private void handleDataError(String logMessage) {
         Log.e("FilmDetails", logMessage);
         Toast.makeText(this, "Ошибка загрузки данных фильма", Toast.LENGTH_LONG).show();
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_MOVIE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            Movie updatedMovie = data.getParcelableExtra(AddFilm.EXTRA_SAVED_MOVIE);
+            if (updatedMovie != null) {
+                currentMovie = updatedMovie; // Обновляем текущий фильм в FilmDetails
+                populateMovieDetails();      // Обновляем UI
+                Toast.makeText(this, "Фильм успешно обновлен", Toast.LENGTH_SHORT).show();
+
+                // Устанавливаем результат для AllMoviesFragment, чтобы он обновил список
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(EXTRA_UPDATED_MOVIE_ID, currentMovie.getId());
+                setResult(Activity.RESULT_OK, resultIntent);
+                // Не закрываем FilmDetails автоматически, пользователь сам выйдет
+            }
+        }
     }
 }
