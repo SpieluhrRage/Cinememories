@@ -1,117 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".MainActivity">
-
-    <EditText
-        android:id="@+id/editFileName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Название файла (внутр. хранилище)"
-        android:inputType="text"
-        android:layout_marginBottom="8dp"/>
-
-    <EditText
-        android:id="@+id/editFileContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Содержимое файла"
-        android:inputType="textMultiLine"
-        android:minLines="3"
-        android:gravity="top"
-        android:layout_marginBottom="16dp"/>
+    android:background="#FAF4ED">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
 
         <Button
-            android:id="@+id/btnSave"
-            android:layout_width="0dp"
+            android:id="@+id/openWeb"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Сохранить/Перезаписать"/>
+            android:layout_marginVertical="8dp"
+            android:backgroundTint="#5A8A63"
+            android:textColor="#FFFFFF"
+            android:text="Открыть каталог фильмов" />
 
         <Button
-            android:id="@+id/btnAppend"
-            android:layout_width="0dp"
+            android:id="@+id/playMusic"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Добавить"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginVertical="8dp"
+            android:backgroundTint="#4C6793"
+            android:textColor="#FFFFFF"
+            android:text="Играть саундтрек" />
+
+        <Button
+            android:id="@+id/animate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:backgroundTint="#8E5A83"
+            android:textColor="#FFFFFF"
+            android:text="Анимация постера" />
+
+        <Button
+            android:id="@+id/notifyNow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:backgroundTint="#BA5A4F"
+            android:textColor="#FFFFFF"
+            android:text="Напомнить сейчас" />
+
+        <Button
+            android:id="@+id/notifyLater"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:backgroundTint="#D69B2E"
+            android:textColor="#FFFFFF"
+            android:text="Напомнить позже" />
+
+        <TextView
+            android:id="@+id/animateTarget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Фильм дня: Интерстеллар"
+            android:textSize="20sp"
+            android:textColor="#333333"
+            android:gravity="center"
+            android:layout_marginTop="24dp"
+            android:padding="12dp"
+            android:background="@drawable/text_border" />
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
-
-        <Button
-            android:id="@+id/btnRead"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Прочитать"/>
-
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Удалить"
-            android:backgroundTint="@android:color/holo_red_light"
-            android:textColor="@android:color/white"
-            android:layout_marginStart="8dp"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Прочитанное содержимое:"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/tvFileContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="#EEEEEE"
-        android:padding="8dp"
-        android:minHeight="50dp"
-        android:text=""/>
-
-    <!-- Кнопки для Задания 3 (внешнее хранилище) -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Внешнее хранилище:"
-        android:textStyle="bold"
-        android:layout_marginTop="24dp"/>
-
-    <Button
-        android:id="@+id/btnSaveExternal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Сохранить во внешнее"/>
-    <Button
-        android:id="@+id/btnReadExternal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Прочитать из внешнего"/>
-    <Button
-        android:id="@+id/btnDeleteExternal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Удалить из внешнего"/>
-
-
-
-</LinearLayout>
+</ScrollView>
