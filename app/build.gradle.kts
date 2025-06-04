@@ -1,7 +1,18 @@
+import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
 }
+val localProperties = Properties().apply {
+    // Проверяем, существует ли файл local.properties в корне проекта
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        // Если да, читаем его с помощью reader() и загружаем свойства
+        localFile.reader().use { load(it) }
+    }
+}
 
+// Достаём конкретное свойство (или пустую строку, если нет)
+val TMDB_API_KEY: String = localProperties.getProperty("TMDB_API_KEY", "")
 android {
     namespace = "com.example.platonov"
     compileSdk = 35
@@ -13,7 +24,13 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("String", "TMDB_API_KEY", "\"${TMDB_API_KEY}\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true     // включаем ViewBinding, чтобы не писать findViewById
     }
 
     buildTypes {
@@ -37,6 +54,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.lifecycle.viewmodel.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -77,4 +95,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.10")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.2")
+    implementation("androidx.navigation:navigation-fragment:2.7.2")
+    implementation("androidx.navigation:navigation-ui:2.7.2")
 }

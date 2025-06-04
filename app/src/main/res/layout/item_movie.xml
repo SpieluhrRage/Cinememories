@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_movie_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="?attr/selectableItemBackground">
+
+    <!-- 1) Постер -->
+    <ImageView
+        android:id="@+id/imageViewPoster"
+        android:layout_width="64dp"
+        android:layout_height="96dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 2) Заголовок (слева от иконок) -->
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Очень длинный заголовок фильма"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintStart_toEndOf="@id/imageViewPoster"
+        app:layout_constraintTop_toTopOf="@id/imageViewPoster"
+        app:layout_constraintEnd_toStartOf="@id/buttonDelete"
+        android:layout_marginStart="8dp" />
+
+    <!-- 3) Кнопка «Delete» (Корзина) -->
+    <ImageButton
+        android:id="@+id/buttonDelete"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:srcCompat="@android:drawable/ic_delete"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="@color/design_default_color_error"
+        app:layout_constraintEnd_toStartOf="@id/buttonFavorite"
+        app:layout_constraintTop_toTopOf="@id/textViewTitle"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- 4) Кнопка «Favorite» (звёздочка) -->
+    <ImageButton
+        android:id="@+id/buttonFavorite"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:srcCompat="@android:drawable/btn_star_big_off"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textViewTitle" />
+
+    <!-- 5) Год -->
+    <TextView
+        android:id="@+id/textViewYear"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="1982"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintStart_toStartOf="@id/textViewTitle"
+        app:layout_constraintTop_toBottomOf="@id/textViewTitle"
+        app:layout_constraintEnd_toEndOf="@id/textViewTitle"
+        android:layout_marginTop="4dp" />
+
+    <!-- 6) Жанры -->
+    <TextView
+        android:id="@+id/textViewGenres"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="?android:attr/textColorSecondary"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintStart_toStartOf="@id/textViewYear"
+        app:layout_constraintTop_toBottomOf="@id/textViewYear"
+        app:layout_constraintEnd_toEndOf="@id/textViewYear"
+        android:layout_marginTop="2dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

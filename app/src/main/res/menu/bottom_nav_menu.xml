@@ -2,18 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/bottom_nav_genres"
-        android:icon="@drawable/list_24dp_b46643_fill0_wght400_grad0_opsz24"
-        android:title="Жанры" />
+        android:id="@+id/movieListFragment"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="Library" />
 
     <item
-        android:id="@+id/bottom_nav_trending"
-        android:icon="@drawable/trending_up_24dp_b46643_fill0_wght400_grad0_opsz24"
-        android:title="Популярное" />
+        android:id="@+id/favoritesFragment"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="Favorites" />
 
     <item
-        android:id="@+id/bottom_nav_search"
-        android:icon="@drawable/search_24dp_b46643_fill0_wght400_grad0_opsz24"
-        android:title="Поиск" />
+        android:id="@+id/searchFilterFragment"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Search" />
+
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="Profile" />
 
 </menu>

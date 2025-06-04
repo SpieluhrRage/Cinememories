@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/movieListFragment">
+
+    <fragment
+        android:id="@+id/movieListFragment"
+        android:name="com.example.platonov.ui.collection.MovieListFragment"
+        android:label="Список фильмов">
+        <action
+            android:id="@+id/action_movieListFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+        <action
+            android:id="@+id/action_movieListFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.platonov.ui.collection.FavoritesFragment"
+        android:label="Избранное">
+        <action
+            android:id="@+id/action_favoritesFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.example.platonov.ui.detail.MovieDetailFragment"
+        android:label="Детали фильма">
+        <argument
+            android:name="movieId"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFilterFragment"
+        android:name="com.example.platonov.ui.search.SearchFilterFragment"
+        android:label="Поиск/Фильтрация">
+        <action
+            android:id="@+id/action_searchFilterFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.platonov.ui.profile.ProfileFragment"
+        android:label="Профиль" />
+    <fragment
+        android:id="@+id/addMovieFragment"
+        android:name="com.example.platonov.ui.add.AddMovieFragment"
+        android:label="Добавить фильм" />
+
+    <!-- И action из MovieListFragment → AddMovieFragment -->
+    <action
+        android:id="@+id/action_movieListFragment_to_addMovieFragment"
+        app:destination="@id/addMovieFragment" />
+    <!-- Здесь будут ещё пути к SearchFragment и ProfileFragment -->
+</navigation>

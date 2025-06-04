@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_search_filter"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <!-- Поле для ввода жанра -->
+    <EditText
+        android:id="@+id/editTextGenre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Genre"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Поле для года от -->
+    <EditText
+        android:id="@+id/editTextYearFrom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="Year From"
+        app:layout_constraintTop_toBottomOf="@+id/editTextGenre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Поле для года до -->
+    <EditText
+        android:id="@+id/editTextYearTo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="Year To"
+        app:layout_constraintTop_toBottomOf="@+id/editTextYearFrom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- SeekBar (или RatingBar) для минимального рейтинга -->
+    <TextView
+        android:id="@+id/textViewMinRatingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Min Rating:"
+        app:layout_constraintTop_toBottomOf="@+id/editTextYearTo"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <RatingBar
+        android:id="@+id/ratingBarFilter"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMinRatingLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="4dp"/>
+
+    <!-- Кнопка Применить -->
+    <Button
+        android:id="@+id/buttonApplyFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apply Filter"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBarFilter"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- RecyclerView для вывода результата -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSearchResults"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/buttonApplyFilter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

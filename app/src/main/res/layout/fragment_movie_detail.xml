@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollViewDetail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Постер фильма -->
+        <ImageView
+            android:id="@+id/imageViewDetailPoster"
+            android:layout_width="120dp"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Заголовок: Название фильма -->
+        <TextView
+            android:id="@+id/textViewDetailTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Movie Title"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="2"
+            app:layout_constraintTop_toTopOf="@+id/imageViewDetailPoster"
+            app:layout_constraintStart_toEndOf="@+id/imageViewDetailPoster"
+            app:layout_constraintEnd_toStartOf="@+id/buttonFavoriteDetail"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Кнопка 'Избранное' -->
+        <ImageButton
+            android:id="@+id/buttonFavoriteDetail"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@android:drawable/btn_star_big_off"
+            app:layout_constraintTop_toTopOf="@+id/imageViewDetailPoster"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Год и жанр -->
+        <TextView
+            android:id="@+id/textViewDetailYearGenre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="2023, Drama"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDetailTitle"
+            app:layout_constraintStart_toStartOf="@+id/textViewDetailTitle"
+            app:layout_constraintEnd_toEndOf="@+id/textViewDetailTitle"
+            android:layout_marginTop="4dp" />
+
+        <!-- Синопсис -->
+        <TextView
+            android:id="@+id/textViewDetailSynopsisLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Synopsis:"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewDetailPoster"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/textViewDetailSynopsis"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Movie synopsis goes here..."
+            android:textAppearance="?attr/textAppearanceBody2"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDetailSynopsisLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="4dp" />
+
+        <!-- RatingBar для оценки пользователя -->
+        <RatingBar
+            android:id="@+id/ratingBarUser"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="0.5"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDetailUserRatingLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <!-- Метка 'Оценка пользователя' -->
+
+        <!-- Метка 'Заметки' -->
+        <TextView
+            android:id="@+id/textViewDetailUserRatingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:text="Your Rating:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDetailSynopsis" />
+
+        <TextView
+            android:id="@+id/textViewDetailNotesLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notes:"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBarUser"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <!-- EditText для заметок -->
+        <EditText
+            android:id="@+id/editTextDetailNotes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Add your notes here"
+            android:minLines="3"
+            android:gravity="top"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDetailNotesLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="4dp" />
+
+        <!-- Кнопка 'Сохранить заметки' -->
+        <Button
+            android:id="@+id/buttonSaveNotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            app:layout_constraintTop_toBottomOf="@+id/editTextDetailNotes"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
