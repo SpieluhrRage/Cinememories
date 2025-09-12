@@ -55,6 +55,9 @@
     <!-- И action из MovieListFragment → AddMovieFragment -->
     <action
         android:id="@+id/action_movieListFragment_to_addMovieFragment"
-        app:destination="@id/addMovieFragment" />
+        app:destination="@id/addMovieFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/addMovieFragment"
+        app:popUpToInclusive="true"/>
     <!-- Здесь будут ещё пути к SearchFragment и ProfileFragment -->
 </navigation>
