@@ -3,37 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/appBackground">
 
-    <!-- Каждый NavHostFragment должен иметь точно такой же ID, который вы используете в коде -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:navGraph="@navigation/nav_graph"
-        app:defaultNavHost="true" />
+        app:defaultNavHost="true"
+        app:backgroundTint="@color/addFilmButton"
+        app:tint="@android:color/white"
+        app:layout_anchor="@id/nav_host_fragment"
+        app:layout_anchorGravity="bottom|end"
+        app:behavior_autoHide="true"/>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddMovie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="95dp"
+        android:contentDescription="@string/add_movie"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/addFilmButton"
+        app:behavior_autoHide="true"
+        app:tint="@android:color/white" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginTop="100dp"
-        app:menu="@menu/bottom_nav_menu" />
-
-    <!-- Если вы хотите, чтобы FAB рисовалась над BottomNavigationView, прикрепите её именно здесь, а не во фрагменте -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddMovie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="15dp"
-        android:src="@android:drawable/ic_input_add"
-        app:layout_anchor="@id/bottomNav"
-        app:layout_anchorGravity="top|end"
-
-        />
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="labeled"
+        app:itemTextColor="@color/bottom_nav_item_color"
+        app:itemIconTint="@color/bottom_nav_item_color"
+        app:backgroundTint="@color/bottom_nav_bg"
+        app:elevation="8dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
