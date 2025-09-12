@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             navController.navigate(R.id.action_movieListFragment_to_addMovieFragment);
         });
 
+      
 
     }
 }
