@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -48,11 +49,25 @@ public class MainActivity extends AppCompatActivity {
 
         // (Если вы используете FloatingActionButton именно в activity_main.xml)
         binding.fabAddMovie.setOnClickListener(v -> {
-            // Выполняем навигацию к AddMovieFragment
-            navController.navigate(R.id.action_movieListFragment_to_addMovieFragment);
+            // уже на Add — ничего не делаем
+            if (navController.getCurrentDestination() != null &&
+                    navController.getCurrentDestination().getId() == R.id.addMovieFragment) {
+                return;
+            }
+
+            // если экран Add уже есть в back stack — просто вернёмся к нему
+            boolean popped = navController.popBackStack(R.id.addMovieFragment, false);
+
+            if (!popped) {
+                // иначе откроем его (и защитимся от дабл-кликов)
+                v.setEnabled(false);
+                navController.navigate(R.id.addMovieFragment);
+                v.postDelayed(() -> v.setEnabled(true), 400);
+            }
         });
 
-      
+
+
 
     }
 }
