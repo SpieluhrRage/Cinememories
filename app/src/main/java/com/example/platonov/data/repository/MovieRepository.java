@@ -1,19 +1,19 @@
 package com.example.platonov.data.repository;
 
-
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.platonov.BuildConfig;
 import com.example.platonov.data.dao.MovieDao;
 import com.example.platonov.data.database.AppDatabase;
 import com.example.platonov.data.entity.MovieEntity;
+import com.example.platonov.data.prefs.SessionManager;
 import com.example.platonov.network.TmdbApiService;
-import com.example.platonov.network.TmdbRetrofitClient;
 import com.example.platonov.network.TmdbMovieResponse;
+import com.example.platonov.network.TmdbRetrofitClient;
 import com.example.platonov.network.TmdbSearchResult;
-import com.example.platonov.BuildConfig;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,59 +29,63 @@ import retrofit2.Response;
 
 /**
  * Репозиторий для работы с MovieEntity и TMDb API.
+ * !!! Главное отличие: все выборки и вставки теперь привязаны к активному userId.
  */
 public class MovieRepository {
 
     private final MovieDao movieDao;
-    private final LiveData<List<MovieEntity>> allMovies;
-    private final LiveData<List<MovieEntity>> favoriteMovies;
     private final TmdbApiService tmdbApiService;
+    private final SessionManager session;
 
     private static final ExecutorService databaseExecutor =
             Executors.newSingleThreadExecutor();
 
     // Формат даты из TMDb: "yyyy-MM-dd"
     private final SimpleDateFormat tmdbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    // Формат, в котором вы хотите хранить год или дату (например "yyyy")
+    // Храним год как "yyyy"
     private final SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-
-    // TMDb API_KEY (поместите сюда ваш ключ)
-
 
     public MovieRepository(Application application) {
         AppDatabase db = AppDatabase.getInstance(application);
         movieDao = db.movieDao();
-        allMovies = movieDao.getAllMovies();
-        favoriteMovies = movieDao.getFavoriteMovies();
         tmdbApiService = TmdbRetrofitClient.getInstance();
+        session = new SessionManager(application);
     }
 
-    /** Получить LiveData со списком всех фильмов */
+    /** Удобный помощник: актуальный ID пользователя */
+    private long uid() {
+        return session.getUserId();
+    }
+
+    /** Получить LiveData со списком всех фильмов ТЕКУЩЕГО пользователя */
     public LiveData<List<MovieEntity>> getAllMovies() {
-        return allMovies;
+        return movieDao.getAllMoviesForUser(uid());
     }
 
-    /** Получить LiveData с одним фильмом по ID */
+    /** Получить LiveData с одним фильмом по ID (без фильтра по userId — id уникален) */
     public LiveData<MovieEntity> getMovieById(long movieId) {
         return movieDao.getMovieById(movieId);
     }
 
-    /** Получить LiveData списка избранных фильмов */
+    /** Получить LiveData списка избранных фильмов ТЕКУЩЕГО пользователя */
     public LiveData<List<MovieEntity>> getFavoriteMovies() {
-        return favoriteMovies;
+        return movieDao.getFavoriteMoviesForUser(uid());
     }
 
-    /** Получить LiveData списка фильмов с фильтрацией */
+    /** Получить LiveData списка фильмов с фильтрацией для ТЕКУЩЕГО пользователя */
     public LiveData<List<MovieEntity>> getMoviesByFilter(String genre, Integer yearFrom, Integer yearTo, Float minRating) {
-        return movieDao.getMoviesByFilter(genre, yearFrom, yearTo, minRating);
+        return movieDao.getMoviesByFilterForUser(genre, yearFrom, yearTo, minRating, uid());
     }
 
-    /** Вставить новый фильм (асинхронно) */
+    /** Вставить новый фильм (асинхронно) — ВАЖНО: проставляем владельца */
     public void insertMovie(final MovieEntity movie) {
-        databaseExecutor.execute(() -> movieDao.insertMovie(movie));
+        databaseExecutor.execute(() -> {
+            movie.setUserId(uid()); ; // привязка к текущему пользователю
+            movieDao.insert(movie);
+        });
     }
 
-    /** Обновить фильм (асинхронно) */
+    /** Обновить фильм (асинхронно) — владелец уже задан при вставке */
     public void updateMovie(final MovieEntity movie) {
         databaseExecutor.execute(() -> movieDao.updateMovie(movie));
     }
@@ -92,19 +96,20 @@ public class MovieRepository {
     }
 
     /**
-     * Поиск фильма по title в TMDb.
-     * Возвращает MutableLiveData, на которую можно подписаться (ViewModel).
+     * Поиск в TMDb. Возвращаем список MovieEntity-ПРЕДЛОЖЕНИЙ.
+     * Мы сразу проставим userId, чтобы при прямой вставке не забыть;
+     * но конечная вставка всё равно идёт через insertMovie().
      */
     public MutableLiveData<List<MovieEntity>> searchMoviesInTmdb(String query) {
         MutableLiveData<List<MovieEntity>> liveData = new MutableLiveData<>();
 
-        // Делаем асинхронный запрос к TMDb
         Call<TmdbSearchResult> call = tmdbApiService.searchMovies(
                 BuildConfig.TMDB_API_KEY,
                 query,
-                1,         // берем первую страницу
-                "ru-RU"    // можно “en-US” или другой язык
+                1,
+                "ru-RU"
         );
+
         call.enqueue(new Callback<TmdbSearchResult>() {
             @Override
             public void onResponse(Call<TmdbSearchResult> call, Response<TmdbSearchResult> response) {
@@ -112,11 +117,11 @@ public class MovieRepository {
                     List<TmdbMovieResponse> tmdbList = response.body().getResults();
                     List<MovieEntity> converted = new ArrayList<>();
 
-                    // Конвертируем список TmdbMovieResponse -> MovieEntity
+                    long ownerId = uid();
+
                     for (TmdbMovieResponse item : tmdbList) {
                         String title = item.getTitle();
 
-                        // Преобразуем release_date -> год (int)
                         int yearInt = 0;
                         String rd = item.getReleaseDate();
                         if (rd != null && !rd.isEmpty()) {
@@ -128,7 +133,7 @@ public class MovieRepository {
                                 e.printStackTrace();
                             }
                         }
-                        // Жанры (только ID сейчас). Если надо строку, можно преобразовать в "Action, Drama" вручную.
+
                         String genreNames = "";
                         List<Integer> genreIds = item.getGenreIds();
                         if (genreIds != null && !genreIds.isEmpty()) {
@@ -139,22 +144,18 @@ public class MovieRepository {
                                     namesList.add(name);
                                 }
                             }
-                            // Объединяем список названий в одну строку через запятую
                             genreNames = android.text.TextUtils.join(", ", namesList);
                         }
 
-                        // Постер: TMDb возвращает только относительный путь, нужно собрать полный URL:
-                        //   https://image.tmdb.org/t/p/w500/{poster_path}
-                        // или другой размер: w200, w300, original и т. д.
                         String posterUrl = null;
                         if (item.getPosterPath() != null) {
                             posterUrl = "https://image.tmdb.org/t/p/w500" + item.getPosterPath();
                         }
 
-                        String synopsis = item.getOverview(); // описание из TMDb
+                        String synopsis = item.getOverview();
 
-                        // Создаём MovieEntity. Для полей isFavorite, isWatched, userRating, notes поставим значения по умолчанию
                         MovieEntity movieEntity = new MovieEntity(
+                                      // текущий пользователь
                                 title,
                                 yearInt,
                                 genreNames,
@@ -162,15 +163,17 @@ public class MovieRepository {
                                 synopsis,
                                 false,    // isFavorite
                                 0f,       // userRating
-                                ""        // notes
+                                ""       // notes
                         );
+
+                        // ВАЖНО: отметим владельца прямо в кандидате
+                        movieEntity.setUserId(ownerId);
+
                         converted.add(movieEntity);
                     }
 
-                    // Публикуем результат
                     liveData.postValue(converted);
                 } else {
-                    // Если ответ пустой или ошибка, публикуем null или пустой список
                     liveData.postValue(new ArrayList<>());
                 }
             }

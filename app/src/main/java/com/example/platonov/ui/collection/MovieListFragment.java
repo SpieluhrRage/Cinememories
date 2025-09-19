@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment; // <— ВАЖНО
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -24,6 +26,7 @@ public class MovieListFragment extends Fragment {
     private MovieListAdapter adapter;
 
     public MovieListFragment() {}
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,

@@ -7,18 +7,16 @@
     android:layout_height="match_parent"
     android:padding="24dp">
 
-    <!-- Заголовок "Login" -->
     <TextView
         android:id="@+id/textViewLoginTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:textAppearance="?attr/textAppearanceHeadline5"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="?attr/textAppearanceHeadline5"/>
 
-    <!-- Поле ввода Email -->
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="0dp"
@@ -30,7 +28,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp"/>
 
-    <!-- Поле ввода Пароль -->
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="0dp"
@@ -42,15 +39,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!-- Кнопка Login -->
+    <!-- Только для регистрации -->
+    <EditText
+        android:id="@+id/editTextConfirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Confirm password"
+        android:inputType="textPassword"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Login"
-        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@id/editTextConfirm"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp"/>
+
+    <Button
+        android:id="@+id/buttonRegisterMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register mode"
+        app:layout_constraintTop_toBottomOf="@id/buttonLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

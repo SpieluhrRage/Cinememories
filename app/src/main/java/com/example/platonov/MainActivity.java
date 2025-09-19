@@ -1,6 +1,7 @@
 package com.example.platonov;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.platonov.data.prefs.SessionManager;
 import com.example.platonov.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -21,6 +23,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SessionManager session = new SessionManager(this);
+        if (!session.isLoggedIn()) {
+            startActivity(new Intent(this, LoginActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+            finish();
+            return;
+        }
 
         // 1. Инициализируем ViewBinding для activity_main.xml
         binding = ActivityMainBinding.inflate(getLayoutInflater());

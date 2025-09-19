@@ -44,16 +44,11 @@ public class ProfileFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
         binding.buttonLogout.setOnClickListener(v -> {
-            // Выполняем логику выхода: очищаем БД
             viewModel.logout();
-
-            // Переходим к LoginActivity и закрываем текущую Activity
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
+            if (getActivity() != null) getActivity().finish();
         });
     }
 
