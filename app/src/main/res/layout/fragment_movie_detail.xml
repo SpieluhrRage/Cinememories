@@ -89,7 +89,8 @@
             android:stepSize="0.5"
             app:layout_constraintTop_toBottomOf="@+id/textViewDetailUserRatingLabel"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:visibility="gone"/>
 
         <!-- Метка 'Оценка пользователя' -->
 
@@ -102,7 +103,8 @@
             android:layout_marginTop="20dp"
             android:text="Your Rating:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewDetailSynopsis" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewDetailSynopsis"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/textViewDetailNotesLabel"

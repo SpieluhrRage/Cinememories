@@ -43,6 +43,13 @@ public class ProfileFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
+        viewModel.getUserEmail().observe(getViewLifecycleOwner(), email -> {
+            String text = (email == null || email.isEmpty())
+                    ? "User: Unknown"
+                    : "User: " + email;
+            binding.textViewProfileInfo.setText(text);
+        });
+
         binding.buttonLogout.setOnClickListener(v -> {
             viewModel.logout();
             Intent intent = new Intent(getActivity(), LoginActivity.class);
