@@ -5,7 +5,7 @@
     <color name="addFilmButton">#FF9300</color>
     <color name="nightBackground">#07133f</color>
     <color name="appBackground">#F6F1FF</color>
-
+    <color name="ic_launcher_bg">#E9E2FF</color>
     <color name="bottom_nav_bg">#E9E2FF</color>
     <color name="bottom_nav_active">#2D1B69</color>
     <color name="bottom_nav_inactive">#8B86A6</color>

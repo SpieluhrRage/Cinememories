@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Группа для лёгкой «подпрыгивающей» компоновки внутри безопасной зоны -->
+    <group
+        android:translateX="0"
+        android:translateY="0">
+
+        <!-- Нижняя часть хлопушки -->
+        <path
+            android:fillColor="#2D1B69"
+            android:pathData="M22,46
+                              h64
+                              a8,8 0 0 1 8,8
+                              v26
+                              a8,8 0 0 1 -8,8
+                              h-64
+                              a8,8 0 0 1 -8,-8
+                              v-26
+                              a8,8 0 0 1 8,-8 z"/>
+
+        <!-- Верхняя планка (слегка наклонённая) -->
+        <group
+            android:pivotX="28"
+            android:pivotY="36"
+            android:rotation="-12">
+            <path
+                android:fillColor="#2D1B69"
+                android:pathData="M16,26
+                                  h70
+                                  a6,8 0 0 1 6,6
+                                  v12
+                                  a6,6 0 0 1 -6,6
+                                  h-68
+                                  a6,6 0 0 1 -6,-6
+                                  v-12
+                                  a6,6 0 0 1 6,-6 z"/>
+            <!-- Диагональные светлые вставки -->
+            <path android:fillColor="#E9E2FF"
+                android:pathData="M20,28 h10 v16 h-10 z"/>
+            <path android:fillColor="#E9E2FF"
+                android:pathData="M38,28 h10 v16 h-10 z"/>
+            <path android:fillColor="#E9E2FF"
+                android:pathData="M58,28 h10 v16 h-10 z"/>
+            <path android:fillColor="#E9E2FF"
+                android:pathData="M76,28 h10 v16 h-10 z"/>
+        </group>
+
+        <!-- Тонкая светлая линия на нижней части (имитация зазора крышки) -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.18"
+            android:pathData="M20,56 h68 v2 h-68 z"/>
+
+        <!-- Бэйдж «+» (акцентный) -->
+        <path
+            android:fillColor="#66B698"
+            android:pathData="M76,78
+                              m-12,0
+                              a12,12 0 1,0 24,0
+                              a12,12 0 1,0 -24,0"/>
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M78,70 v16 h-4 v-16 z"/>
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M68,76 h16 v4 h-16 z"/>
+
+        <!-- Небольшой акцент (точка) -->
+        <path
+            android:fillColor="#7C4DFF"
+            android:pathData="M30,68 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0"/>
+    </group>
+</vector>
