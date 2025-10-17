@@ -48,7 +48,6 @@ public class MovieListFragment extends Fragment {
             public void onItemClick(MovieEntity movie) {
                 Bundle args = new Bundle();
                 args.putLong("movieId", movie.getId());
-                // было: Navigation.findNavController(view).navigate(...)
                 NavHostFragment.findNavController(MovieListFragment.this)
                         .navigate(R.id.action_movieListFragment_to_movieDetailFragment, args);
             }
@@ -73,19 +72,11 @@ public class MovieListFragment extends Fragment {
             adapter.submitList(movies);
         });
 
-        // Если FAB находится в активности:
         FloatingActionButton fab = requireActivity().findViewById(R.id.fabAddMovie);
         fab.setOnClickListener(v -> {
-            // было: Navigation.findNavController(view).navigate(...)
             NavHostFragment.findNavController(MovieListFragment.this)
                     .navigate(R.id.action_movieListFragment_to_addMovieFragment);
         });
-
-        // Если когда-то перенесёшь FAB в layout этого фрагмента:
-        // binding.fabAddMovie.setOnClickListener(v -> {
-        //     NavHostFragment.findNavController(this)
-        //         .navigate(R.id.action_movieListFragment_to_addMovieFragment);
-        // });
     }
 
     @Override

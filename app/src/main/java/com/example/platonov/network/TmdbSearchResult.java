@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Описывает обёртку-ответ от /search/movie TMDb.
- */
 public class TmdbSearchResult {
 
     @SerializedName("page")

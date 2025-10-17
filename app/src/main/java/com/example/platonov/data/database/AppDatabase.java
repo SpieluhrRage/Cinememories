@@ -13,16 +13,13 @@ import com.example.platonov.data.entity.UserEntity;
 
 @Database(
         entities = { MovieEntity.class, UserEntity.class },
-        version = 10,          // ↑ подними версию, чтобы БД точно пересоздалась
+        version = 10,
         exportSchema = true
 )
 public abstract class AppDatabase extends RoomDatabase {
-
     private static volatile AppDatabase INSTANCE;
-
     public abstract MovieDao movieDao();
     public abstract UserDao userDao();
-
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
@@ -32,7 +29,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     AppDatabase.class,
                                     "app_db"
                             )
-                            .fallbackToDestructiveMigration()   // разрешаем разрушительную миграцию
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

@@ -8,30 +8,22 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.platonov.data.entity.MovieEntity;
-
 import java.util.List;
 
 @Dao
 public interface MovieDao {
-
     @Insert
     long insert(MovieEntity movie);
-
     @Update
     int updateMovie(MovieEntity movie);
-
     @Delete
     int deleteMovie(MovieEntity movie);
-
     @Query("SELECT * FROM movies WHERE id = :movieId LIMIT 1")
     LiveData<MovieEntity> getMovieById(long movieId);
-
     @Query("SELECT * FROM movies WHERE userId = :uid ORDER BY id DESC")
     LiveData<List<MovieEntity>> getAllMoviesForUser(long uid);
-
     @Query("SELECT * FROM movies WHERE isFavorite = 1 AND userId = :uid ORDER BY id DESC")
     LiveData<List<MovieEntity>> getFavoriteMoviesForUser(long uid);
-
     @Query("SELECT * FROM movies " +
             "WHERE userId = :uid " +
             "AND (:genre IS NULL OR genre LIKE '%' || :genre || '%') " +

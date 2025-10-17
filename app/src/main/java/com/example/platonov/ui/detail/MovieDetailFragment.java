@@ -18,11 +18,7 @@ import com.example.platonov.R;
 import com.example.platonov.data.entity.MovieEntity;
 import com.example.platonov.databinding.FragmentMovieDetailBinding;
 
-/**
- * Фрагмент отображает подробную информацию о фильме,
- * позволяет отметить его «избранным», «просмотренным»,
- * поставить рейтинг и сохранить заметки.
- */
+
 public class MovieDetailFragment extends Fragment {
 
     private FragmentMovieDetailBinding binding;
@@ -31,14 +27,13 @@ public class MovieDetailFragment extends Fragment {
     private MovieEntity currentMovie;
 
     public MovieDetailFragment() {
-        // Пустой конструктор обязательно нужен
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        // Инициализируем ViewBinding
         binding = FragmentMovieDetailBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -47,8 +42,6 @@ public class MovieDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // 1) Получаем аргумент movieId из NavGraph
         if (getArguments() != null) {
             movieId = getArguments().getLong("movieId", -1);
         }
@@ -57,7 +50,6 @@ public class MovieDetailFragment extends Fragment {
             return;
         }
 
-        // 2) Создаём ViewModel и наблюдаем MovieEntity по movieId
         viewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
         viewModel.getMovieById(movieId).observe(getViewLifecycleOwner(), movie -> {
             if (movie != null) {
@@ -66,27 +58,20 @@ public class MovieDetailFragment extends Fragment {
             }
         });
 
-        // 3) Обработка нажатия на кнопку «Избранное»
         binding.buttonFavoriteDetail.setOnClickListener(v -> {
             if (currentMovie == null) return;
             boolean newFav = !currentMovie.isFavorite();
             currentMovie.setFavorite(newFav);
             viewModel.updateMovie(currentMovie);
-            // Сменим иконку сразу
             updateFavoriteIcon(newFav);
         });
 
-        // 4) Обработка чекбокса «Просмотрен»
-
-
-        // 5) Обработка RatingBar
         binding.ratingBarUser.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             if (!fromUser || currentMovie == null) return;
             currentMovie.setUserRating(rating);
             viewModel.updateMovie(currentMovie);
         });
 
-        // 6) Сохранение заметок по кнопке
         binding.buttonSaveNotes.setOnClickListener(v -> {
             if (currentMovie == null) return;
             String notes = binding.editTextDetailNotes.getText().toString().trim();
@@ -96,25 +81,20 @@ public class MovieDetailFragment extends Fragment {
         });
     }
 
-    /**
-     * Заполняет все поля UI из сущности MovieEntity.
-     */
+
     private void populateUI(@NonNull MovieEntity movie) {
-        // Название
+
         binding.textViewDetailTitle.setText(movie.getTitle());
 
-        // Год и жанр
         String yearGenre = movie.getYear() + ", " + movie.getGenre();
         binding.textViewDetailYearGenre.setText(yearGenre);
 
-        // Синопсис
         if (!TextUtils.isEmpty(movie.getSynopsis())) {
             binding.textViewDetailSynopsis.setText(movie.getSynopsis());
         } else {
             binding.textViewDetailSynopsis.setText("Описание отсутствует");
         }
 
-        // Постер (если есть URL, загружаем, иначе — заглушка)
         String posterUrl = movie.getPosterUrl();
         if (!TextUtils.isEmpty(posterUrl)) {
             Glide.with(binding.imageViewDetailPoster.getContext())
@@ -125,30 +105,21 @@ public class MovieDetailFragment extends Fragment {
             binding.imageViewDetailPoster.setImageResource(R.drawable.ic_placeholder);
         }
 
-        // Устанавливаем состояние «Избранное»
         updateFavoriteIcon(movie.isFavorite());
-
-        // Устанавливаем чекбокс «Просмотрен» и рейтинг
-
         binding.ratingBarUser.setRating(movie.getUserRating());
 
-        // Устанавливаем текст заметок
+
         binding.editTextDetailNotes.setText(movie.getNotes());
         binding.ratingBarUser.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             if (fromUser) {
-                // Обновляем наше поле UserRating и сохраняем в БД
                 movie.setUserRating(rating);
                 viewModel.updateMovie(movie);
-                // Можно показать Toast, если нужно:
                 Toast.makeText(getContext(), "Рейтинг сохранён: " + rating, Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    /**
-     * Меняет иконку звезды в зависимости от isFavorite.
-     */
     private void updateFavoriteIcon(boolean isFavorite) {
         if (isFavorite) {
             binding.buttonFavoriteDetail.setImageResource(android.R.drawable.btn_star_big_on);

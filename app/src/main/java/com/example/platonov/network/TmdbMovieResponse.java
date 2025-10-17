@@ -22,7 +22,7 @@ public class TmdbMovieResponse {
     private String overview;
 
     @SerializedName("poster_path")
-    private String posterPath; // нужно приклеить к baseURL, чтобы получить полный URL
+    private String posterPath;
 
     @SerializedName("genre_ids")
     private List<Integer> genreIds;

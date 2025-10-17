@@ -14,11 +14,6 @@ import com.example.platonov.databinding.FragmentAddMovieBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-/**
- * Фрагмент с ViewPager2 и TabLayout: две вкладки —
- *  1) Manual
- *  2) Search TMDb
- */
 public class AddMovieFragment extends Fragment {
 
     private FragmentAddMovieBinding binding;
@@ -37,12 +32,8 @@ public class AddMovieFragment extends Fragment {
     public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // Настраиваем ViewPager2 с нашим адаптером
         AddMoviePagerAdapter pagerAdapter = new AddMoviePagerAdapter(getActivity());
         binding.viewPagerAdd.setAdapter(pagerAdapter);
-
-        // Синхронизируем TabLayout с ViewPager2
         new TabLayoutMediator(binding.tabLayoutAdd, binding.viewPagerAdd,
                 (tab, position) -> {
                     if (position == 0) {

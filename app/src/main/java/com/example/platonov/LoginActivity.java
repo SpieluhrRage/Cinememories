@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
         userDao = AppDatabase.getInstance(getApplicationContext()).userDao();
         session = new SessionManager(this);
 
-        // Если уже авторизован — сразу в MainActivity
         if (session.isLoggedIn()) {
             goToMain();
             return;
@@ -99,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Стартовый режим — «Login»
         applyMode();
     }
 
